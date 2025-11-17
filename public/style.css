@@ -171,17 +171,20 @@ h3 {
 }
 
 .btn_nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-image: url("/public/img/arrow.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 28px;
 
   width: 42px;
   height: 42px;
   border-radius: 50%;
   background-color: rgba(135, 147, 188, 0.82);
   box-shadow: 3px 2px 6.7px 0 rgba(0, 0, 0, 0.25);
+
   position: relative;
   border: none;
+
 
   transition: scale 0.3s;
 }
@@ -190,23 +193,7 @@ h3 {
   transform: scale(1.1);
 }
 
-.btn_nav::before {
-  content: "";
-  position: absolute;
-  width: 20px;
-  border-top: 1px solid #fff;
-  background-color: #fff;
-  transform: rotate(-46deg);
-}
 
-.btn_nav::after {
-  content: "";
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  border-top: 1px solid #fff;
-  border-right: 1px solid #fff;
-}
 
 .nav_text {
   display: flex;
@@ -489,7 +476,7 @@ height: 64px;
 
 .map-wrapper {
   display: flex;
-    width: 100vw;
+  width: 100vw;
   height: 100vh;
   justify-content: center;
   align-items: center;
@@ -499,22 +486,21 @@ height: 64px;
 
 .map-container {
   position: relative;
-  width: 800px;
-  transition: transform 0.4s ease;
+  width: 90%;
+  max-width: 2000px;
+  margin: 0 auto;
 }
 .map-container img {
-  width: 5000px;  /* 🔹 збільш розмір — підбери значення під себе */
+  width:100%;
   height: auto;
+  
 }
 
-.map-container.zoomed {
-  transform: scale(1.2);
-}
 
 .marker {
   position: absolute;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   transform: translate(-50%, -100%);
   transition: transform 0.2s ease;
@@ -532,16 +518,40 @@ height: 64px;
 
 .tooltip {
   position: absolute;
+  pointer-events: none;
   background: white;
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 8px 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  display: none;
-  pointer-events: none;
-  font-size: 14px;
-  color: #1b1812;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1000;
 }
+
+.tooltip img {
+  width: 100px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.tooltip p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.marker {
+  position: absolute;
+  cursor: pointer;
+}
+
+
 
 
 /* футер */

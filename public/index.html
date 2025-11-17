@@ -20,8 +20,6 @@
 
         <li><a href="/public/form.html" class="header_link_contacts">Join Us</a></li>
 
-        <li><a href="form.html" class="header_link_contacts">Join Us</a></li>
-
       </ul>
     </nav>
     <a href="./regist.html" class="btn">Get in touch</a>
@@ -56,8 +54,8 @@
 
     <section class="nav">
     <div class="nav_head_container">
-        <h2>Go to the map to choose a location</h2>
-       <button class="btn_nav" onclick="scrollToMap()"></button>
+      <h2>Go to the map to choose a location</h2>
+      <button class="btn_nav" id="goToMapBtn"></button>
     </div>
 
     <div class="nav_text">
@@ -70,20 +68,27 @@
 
     <div class="nav_line"></div>
 </section>
-<section class="map" id="map-section">
-  <div class="map-container">
-    <img class="map-img" src="./img/map_png.png" alt="Map">
-    <a href="#" class="map-icon icon-1">
-      <img src="./img/icon.png" alt="Icon 1">
-    </a>
-    <a href="#" class="map-icon icon-2">
-      <img src="./img/icon.png" alt="Icon 2">
-    </a>
-    <a href="#" class="map-icon icon-3">
-      <img src="./img/icon.png" alt="Icon 3">
-    </a>
+
+<section class="map-wrapper">
+  <div class="map-container" id="map">
+    <img src="./img/map_png.svg" alt="Map of Ukraine" />
+
+    <div class="marker" style="top: 20%; left: 55%;" data-name="Замок 1" data-link="form.html" data-img="/public/img/img1.jpg">
+      <img src="./img/icon.svg" alt="marker">
+    </div>
+
+    <div class="marker" style="top: 20%; left: 20%;" data-name="Полтава" data-link="poltava.html" data-img="./img/img1.jpg">
+      <img src="./img/icon.svg" alt="marker">
+    </div>
+
+    <div class="marker" style="top: 58%; left: 48%;" data-name="Кропивницький" data-link="kropyvnytskyi.html" data-img="./img/img1.jpg">
+      <img src="./img/icon.svg" alt="marker">
+    </div>
   </div>
 </section>
+
+<div class="tooltip" id="tooltip"></div>
+
 
 <section class="quote">
   <div class="container-quote">
@@ -144,30 +149,6 @@
     <script src="./script.js"></script>
 </body>
 
-
-
-<section class="map-wrapper">
-  <div class="map-container" id="map">
-    <img src="./img/map_png.svg" alt="Map of Ukraine" />
-
-    <div class="marker"
-      style="top: 40%; left: 55%;"
-      data-name="Замок 1"
-      data-link="castle1.html">
-      <img src="./img/icon.svg" alt="marker">
-    </div>
-
-    <div class="marker" style="top: 50%; left: 60%;" data-name="Полтава" data-link="poltava.html">
-      <img src="./img/icon.svg" alt="marker">
-    </div>
-
-    <div class="marker" style="top: 58%; left: 48%;" data-name="Кропивницький" data-link="kropyvnytskyi.html">
-      <img src="./img/icon.svg" alt="marker">
-    </div>
-  </div>
-</section>
-
-<div class="tooltip" id="tooltip"></div>
 
 <footer class="footer">
   <div class="container-footer">
