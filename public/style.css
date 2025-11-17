@@ -3,6 +3,7 @@ body {
   background-color: #e1ddd0;
   font-family: "Inter", sans-serif;
   margin: 0;
+
 }
 
 a {
@@ -459,6 +460,66 @@ height: 64px;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
+/* інтерактивна карта україни */
+
+
+.map-wrapper {
+  display: flex;
+    width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 0;
+  background-color: rgba(179, 174, 163, 0.28);
+}
+
+.map-container {
+  position: relative;
+  width: 800px;
+  transition: transform 0.4s ease;
+}
+.map-container img {
+  width: 5000px;  /* 🔹 збільш розмір — підбери значення під себе */
+  height: auto;
+}
+
+.map-container.zoomed {
+  transform: scale(1.2);
+}
+
+.marker {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  transform: translate(-50%, -100%);
+  transition: transform 0.2s ease;
+}
+
+.marker img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.marker:hover {
+  transform: translate(-50%, -100%) scale(1.15);
+}
+
+.tooltip {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  display: none;
+  pointer-events: none;
+  font-size: 14px;
+  color: #1b1812;
+}
+
 
 /* футер */
 
