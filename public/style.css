@@ -29,6 +29,10 @@ form {
   flex-direction: column;
 }
 
+h3 {
+  margin: 0;
+}
+
 /* header */
 
 .header {
@@ -176,6 +180,7 @@ form {
   background-color: rgba(135, 147, 188, 0.82);
   box-shadow: 3px 2px 6.7px 0 rgba(0, 0, 0, 0.25);
   position: relative;
+  border: none;
 
   transition: scale 0.3s;
 }
@@ -247,7 +252,7 @@ form {
   flex-shrink: 0;
 }
 
-/*сторінка форма*/
+/*форми*/
 
 .container {
   background-color: rgba(179, 174, 163, 0.28);
@@ -382,6 +387,12 @@ input::placeholder {
   align-items: center;
 }
 
+.form-main input {
+  width: 580px;
+  height: 70px;
+  margin-bottom: 40px;
+}
+
 .checkbox-group {
   background: rgba(255, 255, 255, 0.6);
   max-height: 200px;
@@ -400,7 +411,7 @@ input::placeholder {
   align-items: center;
 }
 
-button {
+.submit-btn {
   background-color: rgba(147, 155, 187, 1);
   color: rgba(41, 40, 37, 1);
   border: none;
@@ -411,16 +422,28 @@ button {
   font-size: 20px;
   text-align: left;
   padding-left: 25px;
+  box-shadow: 5px 9px 17.3px -1px rgba(0, 0, 0, 0.25);
+  transition: scale 0.3s;
 }
 
+.submit-btn:hover {
+  transform: scale(1.1);
+}
+
+
 .form-join button {
-width: 700px;
+width: 725px;
 height: 64px;
 }
 
 .form-signup button,
 .form-login button {
   width: 500px;
+  height: 70px;
+}
+
+.form-main button {
+  width: 605px;
   height: 70px;
 }
 
@@ -527,40 +550,49 @@ height: 64px;
   padding: 0 70px;
 }
 
-/*map*/
 .map {
   display: flex;
   justify-content: center;
 }
+
 .map-container {
-  width: 1335px;
-  height: 770px;
   position: relative;
+  width: 100%;
+  max-width: 1335px;
+}
+
+.map-img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .map-icon {
-    position: absolute;
-    transition: transform 0.3s;
-    width: 30.02px;
-    height: 43.32px;
-    opacity: 1;
+  position: absolute;
+  transition: transform 0.3s;
+  width: 2.2%; /* замість фіксованих px */
+  height: auto;
+  opacity: 1;
 }
+
 .map-icon:hover {
-    transform: scale(1.1); 
+  transform: scale(1.1);
 }
+
+/* координати у відсотках відносно зображення */
 .icon-1 {
-  top: 175px; 
-  left: 735px; 
+  top: 22.7%;
+  left: 55.1%;
 }
 
 .icon-2 {
-  top: 230px;
-  left: 935px;
+  top: 29.9%;
+  left: 70.0%;
 }
 
 .icon-3 {
-  top: 330px;
-  left: 830px;
+  top: 42.9%;
+  left: 62.2%;
 }
 
 /*quote*/
@@ -580,6 +612,8 @@ height: 64px;
   box-shadow: 5px 9px 17.3px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   margin: auto;
+
+  
 }
 
 .quote .text-container {
@@ -596,12 +630,136 @@ height: 64px;
 .text-quote {
 font-size: 24px;
 text-align: left;
+
 }
 
 .quote-author {
   color: rgba(0, 0, 0, 0.65);
   margin-top: auto; 
   align-self: flex-end; 
+}
+
+
+
+.whats-next {
+  padding: 80px 0;
+  text-align: center;
+}
+
+.whats-next h2 {
+  font-size: 48px;
+  line-height: 20px; 
+  color: rgba(0, 0, 0, 1);
+}
+
+.container-wats-next {
+  min-height: 245px;
+  background-color: rgba(179, 174, 163, 0.33);
+  display: flex;
+  justify-content: center; /* по горизонталі */
+  align-items: center; 
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 80px;
+  justify-content: center;
+}
+
+.card {
+  background-color: rgba(179, 174, 163, 0.32);
+  border-radius: 10px;
+  box-shadow: 2px 8px 8.4px rgba(0, 0, 0, 0.25);
+  width: 315px;
+  height: 145px;
+  text-align: left;
+  position: relative;
+  transition: box-shadow 0.3s ease;
+  padding: 20px;
+}
+
+
+.card:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 25px;
+}
+
+.card p {
+  font-size: 16px;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.74);
+}
+
+.arrow {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.form {
+  position: relative;
+  padding-bottom: 130px ;
+    overflow: hidden;
+}
+.form::before {
+  content: "";
+  position: absolute;
+  top: 53%; /* по центру секції */
+  left: 50%;
+  transform: translate(-50%, -50%); /* точно по центру */
+  width: 100vw; /* розтягуємо на всю ширину екрану */
+  height: 250px; /* висота смуги */
+  background-color: rgba(179, 174, 163, 0.42); /* колір і прозорість */
+  z-index: 0; 
+  box-shadow: 5px 9px 17.3px -1px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.container-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+    z-index: 1;
+ 
+}
+
+.form-main {
+  position: relative;
+  z-index: 1; /* форма поверх смуги */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 790px;
+  height: 400px;
+  background-color: rgba(179, 174, 163, 0.79);
+  border-radius: 10px;
+  box-shadow: 3px 13px 12.9px 0 rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
+}
+.form h2 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 500;
+  margin-bottom: 9px;
+}
+
+.form p {
+   text-align: center;
+   font-size: 20px;
+   font-weight: 500px;
+   margin-bottom: 65px;
+   color: rgba(0, 0, 0, 0.78);
 }
 
 
