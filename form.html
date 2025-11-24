@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Спадщина</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+   <header class="header">
+        <img src="./img/logo.png" alt="Логотип" class="header_logo">
+        <nav class="header_nav">
+            <ul>
+                <li><a href="./index.html" class="header_link_home">Home</a></li>
+                <li><a href="./about-us.html" class="header_link_abus">About us</a></li>
+                <li><a href="./gallery.html" class="header_link_gallery">Gallery</a></li>
+                <li><a href="./members.html" class="header_link_contacts">Members</a></li>
+                <li><a href="#!" class="header_link_contacts">Tools</a></li>
+                <li><a href="./form.html" class="header_link_contacts">Join Us</a></li>
+            </ul>
+        </nav>
+        <a href="./regist.html" class="btn-header">Get in touch</a>
+    </header>
+    <main>
+
+    <main>
+        <div class="form-join">
+            <div class="container">
+                <h1 class="form-title">Join Our Project</h1>
+                <p>
+                    If you love <span class="highlight">exploring the past</span> and
+                    bringing it to life with modern <br />
+                    tools — we'd love to have you on our team!
+                </p>
+                <div class="form-section">
+                    <p>
+                        *Please fill out the form below and tell us a bit about yourself
+                    </p>
+
+                    <form id="join-form">
+                        <!-- Виправлено: додано id для input та зв'язано з for -->
+                        <label class="form-label" for="name">Name</label>
+                        <input type="text" id="name" name="name" required />
+
+                        <label class="form-label" for="city">City/Country</label>
+                        <input type="text" id="city" name="city" required />
+
+                        <!-- Виправлено: додано унікальні id для чекбоксів -->
+                        <label class="form-label">My field of study or expertise is...</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label" for="architecture">
+                                <input type="checkbox" id="architecture" name="expertise" value="architecture" />
+                                <span class="checkmark"></span>
+                                Architecture
+                            </label>
+
+                            <label class="checkbox-label" for="history">
+                                <input type="checkbox" id="history" name="expertise" value="history" />
+                                <span class="checkmark"></span>
+                                History
+                            </label>
+
+                            <label class="checkbox-label" for="modeling">
+                                <input type="checkbox" id="modeling" name="expertise" value="modeling" />
+                                <span class="checkmark"></span>
+                                Modeling / Visualization
+                            </label>
+
+                            <label class="checkbox-label" for="artdesign">
+                                <input type="checkbox" id="artdesign" name="expertise" value="artdesign" />
+                                <span class="checkmark"></span>
+                                Art & Design
+                            </label>
+                        </div>
+
+                        <label class="form-label" for="message">Short Motivation Message</label>
+                        <textarea id="message" name="message" rows="4" required></textarea>
+
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required />
+
+                        <button class="submit-btn" type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+     <footer class="footer">
+  <div class="container-footer">
+    <div class="footer-text">
+      <p>Got a project <br> in mind? – <br> Let's work together</p>
+    </div>
+
+    <div class="contacts">
+      <div class="privacy">
+        <h4>More about Humap</h4>
+        <div class="line"></div>
+        <ul>
+          <li> <a href="">About Humap</a></li>
+          <li><a href="">Privacy policy</a></li>
+          <li><a href="" >Copyright takedown request</a></li>
+          <li><a href="">Security</a></li>
+        </ul>
+      </div>
+
+      <div class="social-media">
+        <h4>Follow us:</h4>
+        <div class="line"></div>
+        <div class="icons">
+            <ul>
+                <li>
+                    <a href=""><img src="./img/Facebook.png" alt="Facebook"></a>
+                </li>
+                <li>
+                     <a href=""><img src="./img/Instagram.png" alt="Instagram"></a>
+                </li>
+            </ul>
+        </div>
+      </div>
+
+      <div class="email">
+        <h4>Email us:</h4>
+        <div class="line"></div>
+        <a href="mailto:info@roots.com" >info@roots.com</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>All right reserved. ©2025</p>
+    <p>License</p>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/swiper@8.4.5/swiper-bundle.min.js"></script>
+<script src="./script.js"></script>
+<script src="./server.js"></script>
+
+</body>
+</html> 
