@@ -166,50 +166,53 @@ h2, h3 {
 
 /*carousel section*/
 
-.swiper {
+.carousel {
+  overflow: hidden;
+  padding: 60px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
 }
+
+.swiper-coverflow {
+  width: 100%;
+}
+
 .swiper-slide {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .swiper-slide img {
   width: 500px;
   height: 370px;
   border-radius: 10px;
-}
-.swiper-button-prev,
-.swiper-button-next {
-  color: rgba(225, 221, 208, 1) !important;
-}
-
-.carousel {
-  overflow: hidden;
-  padding: 61px;
-  width: 1200px;
-  margin: 0 auto;
+  object-fit: cover;
 }
 
 /*nav section */
 
-.nav {
-  background-color: #b3aea354;
+.nav-main {
+  background-color: rgba(179, 174, 163, 0.33);
   box-shadow: 5px 9px 17.3px -1px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  padding: 25px;
+  margin-bottom: 135px;
 }
 
-.nav h2 {
+.nav-main h2 {
   font-weight: 600;
   font-size: 32px;
   text-align: center;
-  margin: 0;
-  padding: 35px;
+  margin-bottom: 48px;
 }
 
 .nav_head_container {
   display: flex;
   justify-content: center;
-  align-items: center;
+ 
+  gap: 16px;
 }
 
 .btn_nav {
@@ -252,6 +255,7 @@ h2, h3 {
 
 .nav_text {
   display: flex;
+  font-weight: 500;
   align-items: center;
   justify-content: center;
   font-size: 24px;
@@ -279,7 +283,6 @@ h2, h3 {
 
 .nav_line {
   width: 922px;
-  padding-bottom: 24px;
   border-top: 1px solid rgba(0, 0, 0, 0.45);
   opacity: 1;
   margin: 0 auto;
@@ -560,17 +563,26 @@ height: 64px;
   transform: rotate(45deg);
 }
 
+.main-sign .wide-line {
+  height: 251px;
+}
+
+ .line-1 {
+  top: 620px;  
+}
+
+.line-01 {
+  top:520px;
+}
+
 /* інтерактивна карта україни */
 
 
 .map-wrapper {
   display: flex;
-    width: 100vw;
-  height: 100vh;
   justify-content: center;
   align-items: center;
-  padding: 80px 0;
-  background-color: rgba(179, 174, 163, 0.28);
+  margin-bottom: 112px;
 }
 
 .map-container {
@@ -733,65 +745,26 @@ height: 64px;
 }
 
 /*quote*/
-.quote {
-  display: flex;
-  justify-content: center;
-  min-height: 340px;
-   background-color: rgba(179, 174, 163, 0.34);
-}
 
-.container-quote {
-  max-width: 1280px;
-  width: 100%;
-  min-height: 250px;
-
-  background-color: rgba(179, 174, 163, 0.68);
-  box-shadow: 5px 9px 17.3px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  margin: auto;
-}
-
-.quote .text-container {
-  display: flex;
-  flex-direction: column;
-  max-width: 940px;
-  width: 100%;
-  min-height: 140px;
-  height: 100%;
-  margin-left: 295px;
-  margin-top: 60px;
-}
-
-.text-quote {
-font-size: 24px;
-text-align: left;
-}
-
-.quote-author {
-  color: rgba(0, 0, 0, 0.65);
-  margin-top: auto; 
-  align-self: flex-end; 
-}
-
-
-
-.whats-next {
-  padding: 80px 0;
-  text-align: center;
+.main .quote-stud {
+  padding: 66px 92px;
 }
 
 .whats-next h2 {
   font-size: 48px;
-  line-height: 20px; 
-  color: rgba(0, 0, 0, 1);
+   text-align: center;
+   font-weight: 600;
+   margin-bottom: 44px;
 }
 
 .container-wats-next {
+  width: 100vw;
   min-height: 245px;
   background-color: rgba(179, 174, 163, 0.33);
   display: flex;
   justify-content: center; 
   align-items: center; 
+  margin-bottom: 197px;
 }
 
 .cards {
@@ -801,30 +774,30 @@ text-align: left;
   justify-content: center;
 }
 
-.card {
+.card-main {
   background-color: rgba(179, 174, 163, 0.32);
   border-radius: 10px;
   box-shadow: 2px 8px 8.4px rgba(0, 0, 0, 0.25);
-  width: 315px;
-  height: 145px;
+  width: 297px;
+  height: 134px;
   text-align: left;
   position: relative;
   transition: box-shadow 0.3s ease;
-  padding: 20px;
+  padding: 18px 15px;
 }
 
 
-.card:hover {
+.card-main:hover {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
-.card h3 {
+.card-main h3 {
   font-size: 32px;
   font-weight: 500;
   margin-bottom: 25px;
 }
 
-.card p {
+.card-main p {
   font-size: 16px;
   line-height: 20px;
   color: rgba(0, 0, 0, 0.74);
@@ -842,21 +815,22 @@ text-align: left;
 
 .form {
   position: relative;
-  padding-bottom: 130px ;
-    overflow: hidden;
+  padding-bottom: 130px;
+  overflow: hidden;
+  width: 100%;
 }
+
 .form::before {
   content: "";
-  position: absolute;
-  top: 53%;
-  left: 50%;
-  transform: translate(-50%, -50%); 
-  width: 100vw; 
-  height: 250px; 
-  background-color: rgba(179, 174, 163, 0.42); 
-  z-index: 0; 
+  position: absolute; 
+  top:215px; 
+  left: 0;
+  width: 100vw;
+  height: 250px;
+  background: rgba(179, 174, 163, 0.52);
+  z-index: -1; 
   box-shadow: 5px 9px 17.3px -1px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
+
 }
 
 .container-form {
@@ -1139,6 +1113,8 @@ display: flex;
   background: rgba(147, 155, 187, 1);
 }
 
+
+
 .logout::before,
 .edit::before {
   content: "";
@@ -1362,6 +1338,7 @@ gap:90px;
   padding: 44px 85px;
   position: relative; 
     font-weight: 500;
+    max-width: 1137px;
 }
 
 
@@ -1507,7 +1484,7 @@ gap:90px;
   box-shadow: 5px 9px 17.3px -1px rgba(0, 0, 0, 0.25);
 }
 
-.line-1 { top: 380px; }
+.main-members .line-1 { top: 380px; }
 .line-2 { top: 1230px; }
 .line-3 { bottom: 1200px; }
 
@@ -1832,7 +1809,7 @@ align-items: center;
   margin-bottom: 114px;
 }
 
-.carousel-vertical {
+.swiper-container-vertical {
     margin: 0 auto;
     position: relative;
     overflow: hidden;
@@ -1860,6 +1837,7 @@ align-items: center;
     align-items: center;
     overflow: hidden;
     flex-shrink: 0; /* Важливо: запобігає стисканню слайдів */
+     height: calc((100% - 115px * 2) / 3);
 }
 
 .swiper-slide-vertical img {
@@ -1870,7 +1848,9 @@ align-items: center;
     box-shadow: 5px 8px 11.8px 0 rgba(0, 0, 0, 0.25);
     display: block; 
 }
-
+.slick-slide {
+    margin: 0 10px; /* Проміжки з обох боків */
+}
 .title-similar {
   background-color: rgba(179, 174, 163, 0.42);
   box-shadow: 5px 9px 17.3px -1px rgba(0, 0, 0, 0.25);
@@ -1886,27 +1866,32 @@ align-items: center;
   margin-bottom: 82px;
 }
 
-.slider-container {
-    width: 100%;
+ 
+.swiper-container-horizontal {
     overflow: hidden;
+    width: 100%;
     cursor: grab;
+    position: relative;
 }
 
 .swiper-wrapper-horizontal {
     display: flex;
-    gap: 50px;
     transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
     will-change: transform;
-    margin-bottom: 95px;
-    padding: 0 43px;
 }
 
 .swiper-slide-horizontal {
     flex-shrink: 0;
+    width: 300px;
+    margin-right: 51px;
 }
 
 .swiper-slide-horizontal img {
     width: 100%;
+    height: auto;
     display: block;
-    border-radius: 10px;
+}
+
+.swiper-container-horizontal:active {
+    cursor: grabbing;
 }

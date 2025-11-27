@@ -12,14 +12,14 @@
 </head>
 <body>
     <header class="header">
-        <img src="./img/logo.png" alt="Логотип" class="header_logo">
+        <a href="./index.html"><img src="./img/logo.png" alt="Логотип" class="header_logo"></a>
         <nav class="header_nav">
             <ul>
                 <li><a href="./index.html" class="header_link_home">Home</a></li>
                 <li><a href="./about-us.html" class="header_link_abus">About us</a></li>
-                <li><a href="#!" class="header_link_gallery">Gallery</a></li>
-                <li><a href="#!" class="header_link_contacts">Members</a></li>
-                <li><a href="#!" class="header_link_contacts">Tools</a></li>
+                <li><a href="./gallery.html" class="header_link_gallery">Gallery</a></li>
+                <li><a href="./members.html" class="header_link_contacts">Members</a></li>
+                <li><a href="./item.html" class="header_link_contacts">Tools</a></li>
                 <li><a href="./form.html" class="header_link_contacts">Join Us</a></li>
             </ul>
         </nav>
@@ -33,25 +33,23 @@
             </div>
         </section>
 
-        <section class="carousel">
-            <div class="swiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img src="./img/imgjpg.jpg" alt="Slide 1">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="./img/img1.jpg" alt="Slide 2">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="./img/img2.jpg" alt="Slide 3">
-                    </div>
-                </div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-            </div>
-        </section>
+       <section class="carousel">
+  <div class="swiper swiper-coverflow">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <img src="./img/Rectangle 43.png" alt="Slide 1">
+      </div>
+      <div class="swiper-slide">
+        <img src="./img/Rectangle 45.png" alt="Slide 2">
+      </div>
+      <div class="swiper-slide">
+        <img src="./img/Rectangle 44.png" alt="Slide 3">
+      </div>
+    </div>
+  </div>
+</section>
 
-        <section class="nav">
+        <section class="nav-main">
             <div class="nav_head_container">
                 <h2>Go to the map to choose a location</h2>
                 <button class="btn_nav" onclick="scrollToMap()"></button>
@@ -83,41 +81,43 @@
 
         <div class="tooltip" id="tooltip"></div>
 
-        <section class="quote">
-            <div class="container-quote">
-                <div class="text-container">
-                    <p class="text-quote">
-                        "The Humap Team understands digital humanities. Humap allowed us to map at-risk and intangible heritage that exists 
-                        in people's memories, in magazines, flyers <br> and posters."
+        <section class="container-quote-stud">
+            <div class="quote-stud">
+                    <img src="./img/Ellipse 79.png" alt="">
+                    <p class="main-quote">
+                        "Each 3D reconstruction is not just a digital model — it’s a way to preserve the memory of what was once part of our soul.
+                         Through these virtual forms, >we bring back the spirit of Ukrainian heritage"
                     </p>
-                    <p class="quote-author">Seán McGovern, Project Manager, Islington's Pride</p>
-                </div>
+                    
+                    <p class="subtitle-quote">— Project Author</p>
+               
             </div>
         </section>
+    </div>
 
         <section class="whats-next">
             <h2>What's next?</h2>
             <div class="container-wats-next">
                 <div class="cards">
-                    <div class="card">
+                    <div class="card-main">
                         <h3>See our Gallery</h3>
                         <p>Explore our gallery for more visuals and stories</p>
                         <div class="arrow">
-                            <button class="btn_nav"></button>
+                            <a href="./gallery.html"><button class="btn_nav"></button></a>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card-main">
                         <h3>Read about us</h3>
                         <p>Book a demo with us, and we'll activate a project for you</p>
                         <div class="arrow">
-                            <button class="btn_nav"></button>
+                            <a href="./about-us.html"><button class="btn_nav"></button></a>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card-main">
                         <h3>Get in touch</h3>
                         <p>Get in touch via email or telephone</p>
                         <div class="arrow">
-                            <button class="btn_nav"></button>
+                            <a href="./regist.html"><button class="btn_nav">
                         </div>
                     </div>
                 </div>

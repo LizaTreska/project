@@ -2,254 +2,452 @@
 
 /*MAIN PAGE SWIPER*/
 
-const swiper = new Swiper(".swiper", {
+const coverflowSwiper = new Swiper(".swiper-coverflow", {
   effect: "coverflow",
   grabCursor: true,
   centeredSlides: true,
-  slidesPerView: 1,
+  slidesPerView: 5,
+  loop: true,
   coverflowEffect: {
     rotate: 0,
     depth: 200,
-    modifier: 2,
+    modifier: 5,
     slideShadows: false,
   },
-  loop: true,
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
+  
   keyboard: {
     enabled: true,
+    onlyInViewport: true,
   },
-  mousewheel: {
-    thresholdDelta: true,
-  },
+     mousewheel: {
+        forceToAxis: true,   
+        sensitivity: 1,
+    },
+
   breakpoints: {
     560: {
       slidesPerView: 2,
-      coverflowEffect: { stretch: 15 }, 
+      coverflowEffect: {
+        rotate: 0,
+        depth: 200,
+        modifier: 2,
+        slideShadows: false,
+        stretch: 15,
+      },
     },
     768: {
       slidesPerView: 2,
-      coverflowEffect: { stretch: 10 },
+      coverflowEffect: {
+        rotate: 0,
+        depth: 200,
+        modifier: 2,
+        slideShadows: false,
+        stretch: 10,
+      },
     },
     1024: {
       slidesPerView: 2,
-      coverflowEffect: { stretch: 5 },
+      coverflowEffect: {
+        rotate: 0,
+        depth: 200,
+        modifier: 2,
+        slideShadows: false,
+        stretch: 5,
+      },
     },
   },
 });
+
 
 
 /*ВЕРТИКАЛЬНИЙ СЛАЙДЕР ГАЛЕРЕЯ*/
 document.addEventListener('DOMContentLoaded', function() {
-    const swiperWrapper = document.querySelector('.swiper-wrapper-vertical');
-    const slides = document.querySelectorAll('.swiper-slide-vertical');
-    const slidesCount = slides.length;
-    const visibleSlides = 3;
-    let currentIndex = 0;
-    let isScrolling = false;
-    let scrollTimeout;
-    
-    function initSlider() {
-        updateSliderPosition();
-        
-        swiperWrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
-        swiperWrapper.style.willChange = 'transform';
-    }
-    
-    swiperWrapper.addEventListener('wheel', function(e) {
-        e.preventDefault();
-        
-        if (isScrolling) return;
-        
-        clearTimeout(scrollTimeout);
-        isScrolling = true;
-        
-        const direction = e.deltaY > 0 ? 1 : -1;
-        let newIndex = currentIndex;
-        
-        if (direction > 0 && currentIndex < slidesCount - visibleSlides) {
-            newIndex = currentIndex + 1;
-        } else if (direction < 0 && currentIndex > 0) {
-            newIndex = currentIndex - 1;
-        }
-        
-        if (newIndex !== currentIndex) {
-            currentIndex = newIndex;
-            updateSliderPosition();
-        }
-        
-        scrollTimeout = setTimeout(() => {
-            isScrolling = false;
-        }, 400);
-    });
-    
-    function updateSliderPosition() {
-        const containerHeight = swiperWrapper.parentElement.offsetHeight;
-        const totalGapHeight = 115 * (visibleSlides - 1);
-        const slideHeight = (containerHeight - totalGapHeight) / visibleSlides;
-        const gapPercentage = (115 / containerHeight) * 100;
-        const slideHeightPercentage = (slideHeight / containerHeight) * 100;
-        
-        const translateY = -currentIndex * (slideHeightPercentage + gapPercentage);
-        swiperWrapper.style.transform = `translateY(${translateY}%)`;
-    }
-    
-    let startY = 0;
-    let isTouching = false;
-    
-    swiperWrapper.addEventListener('touchstart', function(e) {
-        startY = e.touches[0].clientY;
-        isTouching = true;
-        swiperWrapper.style.transition = 'none'; 
-    });
-    
-    swiperWrapper.addEventListener('touchmove', function(e) {
-        if (!isTouching) return;
-        e.preventDefault();
-        
-        const currentY = e.touches[0].clientY;
-        const diff = startY - currentY;
-        const dragPercentage = diff / swiperWrapper.offsetHeight * 100;
-        
-        if (Math.abs(dragPercentage) < 15) {
-            const containerHeight = swiperWrapper.parentElement.offsetHeight;
-            const totalGapHeight = 115 * (visibleSlides - 1);
-            const slideHeight = (containerHeight - totalGapHeight) / visibleSlides;
-            const gapPercentage = (115 / containerHeight) * 100;
-            const slideHeightPercentage = (slideHeight / containerHeight) * 100;
+    class VerticalSlider {
+        constructor(containerSelector) {
+            this.container = document.querySelector(containerSelector);
+            if (!this.container) return;
             
-            const baseTranslateY = -currentIndex * (slideHeightPercentage + gapPercentage);
-            const dragTranslateY = baseTranslateY + (dragPercentage / 2);
+            this.wrapper = this.container.querySelector('.swiper-wrapper-vertical');
+            this.slides = this.container.querySelectorAll('.swiper-slide-vertical');
+            this.currentIndex = 0;
+            this.isAnimating = false;
+            this.visibleSlides = 3;
+            this.spaceBetween = 115;
             
-            swiperWrapper.style.transform = `translateY(${dragTranslateY}%)`;
+            this.init();
+            this.bindEvents();
         }
-    });
-    
-    swiperWrapper.addEventListener('touchend', function(e) {
-        if (!isTouching) return;
-        isTouching = false;
         
-        swiperWrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
+        init() {
+            // Клонуємо слайди для безперервного циклу
+            this.cloneSlides();
+            this.updatePosition();
+            
+            this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
+        }
         
-        const endY = e.changedTouches[0].clientY;
-        const diff = startY - endY;
+        cloneSlides() {
+            // Клонуємо перші слайди в кінець
+            for (let i = 0; i < this.visibleSlides; i++) {
+                const clone = this.slides[i].cloneNode(true);
+                clone.classList.add('cloned');
+                this.wrapper.appendChild(clone);
+            }
+            
+            // Клонуємо останні слайди на початок
+            for (let i = this.slides.length - 1; i >= this.slides.length - this.visibleSlides; i--) {
+                const clone = this.slides[i].cloneNode(true);
+                clone.classList.add('cloned');
+                this.wrapper.insertBefore(clone, this.wrapper.firstChild);
+            }
+            
+            // Оновлюємо колекцію слайдів
+            this.allSlides = this.wrapper.querySelectorAll('.swiper-slide-vertical');
+            this.totalSlides = this.allSlides.length;
+            
+            // Встановлюємо початкову позицію
+            this.currentIndex = this.visibleSlides;
+        }
         
-        if (Math.abs(diff) > 40) {
-            if (diff > 0 && currentIndex < slidesCount - visibleSlides) {
-                currentIndex++;
-            } else if (diff < 0 && currentIndex > 0) {
-                currentIndex--;
+        updatePosition() {
+            if (!this.allSlides) return;
+            
+            const slideHeight = this.slides[0].offsetHeight;
+            const translateY = -(this.currentIndex * (slideHeight + this.spaceBetween));
+            this.wrapper.style.transform = `translateY(${translateY}px)`;
+        }
+        
+        next() {
+            if (this.isAnimating) return;
+            this.isAnimating = true;
+            
+            this.currentIndex++;
+            this.updatePosition();
+            
+            setTimeout(() => {
+                this.checkBounds();
+                this.isAnimating = false;
+            }, 800);
+        }
+        
+        prev() {
+            if (this.isAnimating) return;
+            this.isAnimating = true;
+            
+            this.currentIndex--;
+            this.updatePosition();
+            
+            setTimeout(() => {
+                this.checkBounds();
+                this.isAnimating = false;
+            }, 800);
+        }
+        
+        checkBounds() {
+            // Перевіряємо чи дійшли до кінця/початку і перестрибуємо
+            if (this.currentIndex >= this.totalSlides - this.visibleSlides) {
+                setTimeout(() => {
+                    this.currentIndex = this.visibleSlides;
+                    this.wrapper.style.transition = 'none';
+                    this.updatePosition();
+                    setTimeout(() => {
+                        this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                    }, 50);
+                }, 50);
+            }
+            
+            if (this.currentIndex <= 0) {
+                setTimeout(() => {
+                    this.currentIndex = this.totalSlides - (2 * this.visibleSlides);
+                    this.wrapper.style.transition = 'none';
+                    this.updatePosition();
+                    setTimeout(() => {
+                        this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                    }, 50);
+                }, 50);
             }
         }
         
-        updateSliderPosition();
-    });
+        bindEvents() {
+            // Стрілки клавіатури
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    this.next();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    this.prev();
+                }
+            });
+            
+            // Колесо миші
+            this.container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                
+                if (this.isAnimating) return;
+                
+                if (e.deltaY > 0) {
+                    this.next();
+                } else {
+                    this.prev();
+                }
+            });
+            
+            // Тач-свайп для мобільних пристроїв
+            let startY = 0;
+            
+            this.container.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+                this.wrapper.style.transition = 'none';
+            });
+            
+            this.container.addEventListener('touchend', (e) => {
+                const endY = e.changedTouches[0].clientY;
+                const diff = startY - endY;
+                
+                this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        this.next();
+                    } else {
+                        this.prev();
+                    }
+                } else {
+                    this.updatePosition();
+                }
+            });
+            
+            
+        }
+        
+        startAutoPlay() {
+            setInterval(() => {
+                if (!this.isAnimating) {
+                    this.next();
+                }
+            }, 4000); // Автопрокрутка кожні 4 секунди
+        }
+    }
     
-    window.addEventListener('resize', function() {
-        updateSliderPosition();
+    // Ініціалізація слайдера
+    const verticalSlider = new VerticalSlider('.swiper-container-vertical');
     });
-    
-    initSlider();
-});
+
 
 /*ГОРИЗОНТАЛЬНИЙ СЛАЙДЕР ДЛЯ ГАЛЕРЕЇ*/
+/*ГОРИЗОНТАЛЬНИЙ СЛАЙДЕР ДЛЯ ГАЛЕРЕЇ*/
 document.addEventListener('DOMContentLoaded', function() {
-    const wrapper = document.querySelector('.swiper-wrapper-horizontal');
-    const slides = Array.from(wrapper.children);
-    const slidesCount = slides.length;
-    const visibleSlides = 3; // скільки показувати одночасно
-    let currentIndex = 0;
-    let isScrolling = false;
-    let scrollTimeout;
-
-    // Ініціалізація
-    function initSlider() {
-        updateSliderPosition();
-    }
-
-    // Прокрутка мишкою
-    wrapper.parentElement.addEventListener('wheel', function(e) {
-        e.preventDefault();
-
-        if (isScrolling) return;
-        isScrolling = true;
-        clearTimeout(scrollTimeout);
-
-        const direction = e.deltaY > 0 ? 1 : -1;
-        let newIndex = currentIndex;
-
-        if (direction > 0 && currentIndex < slidesCount - visibleSlides) {
-            newIndex = currentIndex + 1;
-        } else if (direction < 0 && currentIndex > 0) {
-            newIndex = currentIndex - 1;
+    class HorizontalSlider {
+        constructor(containerSelector) {
+            this.container = document.querySelector(containerSelector);
+            if (!this.container) {
+                console.error('Container not found');
+                return;
+            }
+            
+            this.wrapper = this.container.querySelector('.swiper-wrapper-horizontal');
+            this.slides = this.container.querySelectorAll('.swiper-slide-horizontal');
+            
+            if (this.slides.length === 0) {
+                console.error('No slides found');
+                return;
+            }
+            
+            console.log('Found', this.slides.length, 'slides');
+            
+            this.currentIndex = 0;
+            this.isAnimating = false;
+            this.visibleSlides = 3;
+            this.spaceBetween = 51;
+            
+            this.init();
+            this.bindEvents();
+            this.startAutoPlay();
         }
-
-        if (newIndex !== currentIndex) {
-            currentIndex = newIndex;
-            updateSliderPosition();
+        
+        init() {
+            // Спочатку виміряємо розміри
+            this.slideWidth = this.slides[0].offsetWidth;
+            console.log('Slide width:', this.slideWidth);
+            
+            // Клонуємо слайди
+            this.cloneSlides();
+            
+            // Встановлюємо початкову позицію
+            this.currentIndex = this.visibleSlides;
+            this.updatePosition();
+            
+            this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
+            
+            console.log('Slider initialized. Total slides:', this.totalSlides);
         }
-
-        scrollTimeout = setTimeout(() => {
-            isScrolling = false;
-        }, 400);
-    });
-
-    // Функція оновлення позиції
-    function updateSliderPosition() {
-        const containerWidth = wrapper.parentElement.offsetWidth;
-        const totalGap = 20 * (visibleSlides - 1);
-        const slideWidth = (containerWidth - totalGap) / visibleSlides;
-        const gapPercent = (20 / containerWidth) * 100;
-        const slidePercent = (slideWidth / containerWidth) * 100;
-
-        const translateX = -currentIndex * (slidePercent + gapPercent);
-        wrapper.style.transform = `translateX(${translateX}%)`;
+        
+        cloneSlides() {
+            // Клонуємо останні слайди на початок
+            for (let i = this.slides.length - 1; i >= this.slides.length - this.visibleSlides; i--) {
+                const clone = this.slides[i].cloneNode(true);
+                clone.classList.add('cloned');
+                this.wrapper.insertBefore(clone, this.wrapper.firstChild);
+            }
+            
+            // Клонуємо перші слайди в кінець
+            for (let i = 0; i < this.visibleSlides; i++) {
+                const clone = this.slides[i].cloneNode(true);
+                clone.classList.add('cloned');
+                this.wrapper.appendChild(clone);
+            }
+            
+            // Оновлюємо колекцію слайдів
+            this.allSlides = this.wrapper.querySelectorAll('.swiper-slide-horizontal');
+            this.totalSlides = this.allSlides.length;
+        }
+        
+        updatePosition() {
+            if (!this.allSlides || this.allSlides.length === 0) return;
+            
+            const translateX = -(this.currentIndex * (this.slideWidth + this.spaceBetween));
+            this.wrapper.style.transform = `translateX(${translateX}px)`;
+        }
+        
+        next() {
+            if (this.isAnimating) return;
+            this.isAnimating = true;
+            
+            this.currentIndex++;
+            this.updatePosition();
+            
+            setTimeout(() => {
+                this.checkBounds();
+                this.isAnimating = false;
+            }, 800);
+        }
+        
+        prev() {
+            if (this.isAnimating) return;
+            this.isAnimating = true;
+            
+            this.currentIndex--;
+            this.updatePosition();
+            
+            setTimeout(() => {
+                this.checkBounds();
+                this.isAnimating = false;
+            }, 800);
+        }
+        
+        checkBounds() {
+            // Якщо дійшли до кінця клонів справа
+            if (this.currentIndex >= this.totalSlides - this.visibleSlides) {
+                setTimeout(() => {
+                    this.wrapper.style.transition = 'none';
+                    this.currentIndex = this.visibleSlides;
+                    this.updatePosition();
+                    setTimeout(() => {
+                        this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                    }, 50);
+                }, 50);
+            }
+            
+            // Якщо дійшли до початку клонів зліва
+            if (this.currentIndex <= 0) {
+                setTimeout(() => {
+                    this.wrapper.style.transition = 'none';
+                    this.currentIndex = this.totalSlides - (2 * this.visibleSlides);
+                    this.updatePosition();
+                    setTimeout(() => {
+                        this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                    }, 50);
+                }, 50);
+            }
+        }
+        
+        bindEvents() {
+            // Стрілки клавіатури
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    this.next();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    this.prev();
+                }
+            });
+            
+            // Колесо миші
+            this.container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                if (this.isAnimating) return;
+                
+                if (e.deltaY > 0 || e.deltaX > 0) {
+                    this.next();
+                } else {
+                    this.prev();
+                }
+            });
+            
+            // Drag & Drop
+            let isDragging = false;
+            let startX = 0;
+            let initialTranslate = 0;
+            
+            this.container.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                initialTranslate = this.currentIndex * (this.slideWidth + this.spaceBetween);
+                this.wrapper.style.transition = 'none';
+                this.container.style.cursor = 'grabbing';
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                const diff = startX - e.clientX;
+                const resistance = 3;
+                const translateX = -initialTranslate + (diff / resistance);
+                this.wrapper.style.transform = `translateX(${translateX}px)`;
+            });
+            
+            document.addEventListener('mouseup', (e) => {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                const endX = e.clientX;
+                const diff = startX - endX;
+                
+                this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                this.container.style.cursor = 'grab';
+                
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        this.next();
+                    } else {
+                        this.prev();
+                    }
+                } else {
+                    this.updatePosition();
+                }
+            });
+        }
+        
+        startAutoPlay() {
+            setInterval(() => {
+                if (!this.isAnimating) {
+                    this.next();
+                }
+            }, 4000);
+        }
     }
-
-    // Touch / swipe
-    let startX = 0;
-    let isTouching = false;
-
-    wrapper.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-        isTouching = true;
-        wrapper.style.transition = 'none';
-    });
-
-    wrapper.addEventListener('touchmove', (e) => {
-        if (!isTouching) return;
-        const currentX = e.touches[0].clientX;
-        const diff = startX - currentX;
-        const dragPercent = (diff / wrapper.offsetWidth) * 100;
-
-        const containerWidth = wrapper.parentElement.offsetWidth;
-        const totalGap = 20 * (visibleSlides - 1);
-        const slideWidth = (containerWidth - totalGap) / visibleSlides;
-        const gapPercent = (20 / containerWidth) * 100;
-        const slidePercent = (slideWidth / containerWidth) * 100;
-
-        const baseTranslate = -currentIndex * (slidePercent + gapPercent);
-        const dragTranslate = baseTranslate + (dragPercent / 2);
-
-        wrapper.style.transform = `translateX(${dragTranslate}%)`;
-    });
-
-    wrapper.addEventListener('touchend', () => {
-        isTouching = false;
-        wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
-        updateSliderPosition();
-    });
-
-    initSlider();
+    
+    // Ініціалізація слайдера
+    const horizontalSlider = new HorizontalSlider('.swiper-container-horizontal');
 });
 
 
 /*SCROLL TO MAP FUNCTION FOR MAIN PAGE*/
 
 function scrollToMap() {
-    const mapSection = document.getElementById('map-section');
+    const mapSection = document.getElementById('map');
     if (mapSection) {
         mapSection.scrollIntoView({ 
             behavior: 'smooth',

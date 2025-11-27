@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Спадщина</title>
     <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8.4.5/swiper-bundle.min.css" />
      <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
  <header class="header">
-        <img src="./img/logo.png" alt="Логотип" class="header_logo">
+        <a href="./index.html"> <img src="./img/logo.png" alt="Логотип" class="header_logo">
         <nav class="header_nav">
             <ul>
                 <li><a href="./index.html" class="header_link_home">Home</a></li>
                 <li><a href="./about-us.html" class="header_link_abus">About us</a></li>
-                <li><a href="#!" class="header_link_gallery">Gallery</a></li>
-                <li><a href="#!" class="header_link_contacts">Members</a></li>
-                <li><a href="#!" class="header_link_contacts">Tools</a></li>
+                <li><a href="./gallery.html" class="header_link_gallery">Gallery</a></li>
+                <li><a href="./members.html" class="header_link_contacts">Members</a></li>
+                <li><a href="./item.html" class="header_link_contacts">Tools</a></li>
                 <li><a href="./form.html" class="header_link_contacts">Join Us</a></li>
             </ul>
         </nav>
@@ -33,22 +33,30 @@
     <p>Discover stories behind our projects. Space to share what we build together</p>
 </div>
 
-<section class="carousel-vertical">
-    <div class="swiper-vertical">
-        <div class="swiper-wrapper-vertical">
-            <div class="swiper-slide-vertical">
+<section class="swiper-container-vertical">
+    <div class="swiper-wrapper-vertical">
+        <div class="swiper-slide-vertical">
+            <div class="thumbContainer-vertical">
                 <img src="./img/Rectangle 57.png" alt="Slide 1">
             </div>
-            <div class="swiper-slide-vertical">
+        </div>
+        <div class="swiper-slide-vertical">
+            <div class="thumbContainer-vertical">
                 <img src="./img/Rectangle 58.png" alt="Slide 2">
             </div>
-            <div class="swiper-slide-vertical">
+        </div>
+        <div class="swiper-slide-vertical">
+            <div class="thumbContainer-vertical">
                 <img src="./img/Rectangle 61.png" alt="Slide 3">
             </div>
-            <div class="swiper-slide-vertical">
+        </div>
+        <div class="swiper-slide-vertical">
+            <div class="thumbContainer-vertical">
                 <img src="./img/item3.png" alt="Slide 4">
             </div>
-            <div class="swiper-slide-vertical">
+        </div>
+        <div class="swiper-slide-vertical">
+            <div class="thumbContainer-vertical">
                 <img src="./img/item5.png" alt="Slide 5">
             </div>
         </div>
@@ -63,15 +71,28 @@
   </svg>
 </div>
 
-<div class="slider-container">
+<div class="swiper-container-horizontal">
     <div class="swiper-wrapper-horizontal">
-        <div class="swiper-slide-horizontal"><img src="./img/Rectangle 68.png" alt=""></div>
-        <div class="swiper-slide-horizontal"><img src="./img/Rectangle 67.png" alt=""></div>
-        <div class="swiper-slide-horizontal"><img src="./img/Rectangle 70.png" alt=""></div>
-        <div class="swiper-slide-horizontal"><img src="./img/Rectangle 69.png" alt=""></div>
-        <div class="swiper-slide-horizontal"><img src="./img/Rectangle 71.png" alt=""></div>
+        <div class="swiper-slide-horizontal">
+            <img src="./img/Rectangle 68.png" alt="">
+        </div>
+        <div class="swiper-slide-horizontal">
+            <img src="./img/Rectangle 67.png" alt="">
+        </div>
+        <div class="swiper-slide-horizontal">
+            <img src="./img/Rectangle 70.png" alt="">
+        </div>
+        <div class="swiper-slide-horizontal">
+            <img src="./img/Rectangle 69.png" alt="">
+        </div>
+        <div class="swiper-slide-horizontal">
+            <img src="./img/Rectangle 71.png" alt="">
+        </div>
     </div>
 </div>
+  
+
+
 
 
     </main>
@@ -121,8 +142,7 @@
     <p>License</p>
   </div>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/swiper@8.4.5/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="./script.js"></script>
-
 </body>
 </html> 
