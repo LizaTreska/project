@@ -701,9 +701,9 @@ document.addEventListener('DOMContentLoaded', () => {
 //=======================================================ITEM PAGE COMMENTS====================================================
 
 const initialComments = [
-    { id: 1, initials: "IK", text: "This reconstruction looks amazing! I love the historical details.", time: "2 hours ago" },
-    { id: 2, initials: "MS", text: "Great work! Can you provide the Blender file as well?", time: "2 weeks ago" },
-    { id: 3, initials: "PV", text: "This reconstruction looks amazing! I love the historical details.", time: "2 hours ago" }
+    { id: 1, initials: "IK", text: "This reconstruction looks amazing! I love the historical details.", timestamp: new Date(Date.now() - 2 * 3600 * 1000).toISOString() },
+    { id: 2, initials: "MS", text: "Great work! Can you provide the Blender file as well?", timestamp: new Date(Date.now() - 14 * 24 * 3600 * 1000).toISOString() },
+    { id: 3, initials: "PV", text: "This reconstruction looks amazing! I love the historical details.", timestamp: new Date(Date.now() - 2 * 3600 * 1000).toISOString() }
 ];
 
 const MAX_COMMENTS = 3;
@@ -719,7 +719,7 @@ function getInitials(name) {
 // Формат часу
 function formatTime(timestamp) {
     const now = new Date();
-    const diff = Math.floor((now - new Date(timestamp)) / 1000); // в секундах
+    const diff = Math.floor((now - new Date(timestamp)) / 1000);
 
     if (diff < 60) return 'Just now';
     if (diff < 3600) return `${Math.floor(diff / 60)} minute${Math.floor(diff / 60) > 1 ? 's' : ''} ago`;
@@ -781,12 +781,9 @@ function addNewComment(name, email, text) {
     return newComment;
 }
 
-// Валідація форми
-function validateForm(name, email, text) {
+// Валідація тексту коментаря
+function validateForm(text) {
     const errors = [];
-    if (!name.trim()) errors.push('Name is required');
-    if (!email.trim()) errors.push('Email is required');
-    else if (!/\S+@\S+\.\S+/.test(email)) errors.push('Email is invalid');
     if (!text.trim()) errors.push('Comment text is required');
     else if (text.trim().length < 5) errors.push('Comment must be at least 5 characters long');
     return errors;
@@ -808,27 +805,34 @@ function resetForm() {
 }
 
 // Ініціалізація коментарів
+// Ініціалізація коментарів
 function initComments() {
     const commentsSection = document.querySelector('.comments');
     if (!commentsSection) return;
 
     const submitButton = document.getElementById('submitComment');
     const commentText = document.getElementById('commentText');
+    const commentForm = document.getElementById('commentForm');
 
     if (submitButton && commentText) {
         submitButton.addEventListener('click', function(e) {
             e.preventDefault();
-            const name = document.getElementById('userName').value;
-            const email = document.getElementById('userEmail').value;
-            const text = commentText.value;
 
-            const errors = validateForm(name, email, text);
+            // Перевірка авторизації
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                showMessage('You must be logged in to post a comment.', 'error');
+                return;
+            }
+
+            const text = commentText.value;
+            const errors = validateForm(text);
             if (errors.length > 0) {
                 showMessage(errors.join(', '), 'error');
                 return;
             }
 
-            addNewComment(name, email, text);
+            addNewComment(currentUser.name, currentUser.email, text);
             showMessage('Comment added successfully!', 'success');
             resetForm();
         });
@@ -842,6 +846,7 @@ function initComments() {
     displayComments(savedComments && savedComments.length ? savedComments : initialComments);
 }
 
+
 document.addEventListener('DOMContentLoaded', initComments);
 
 // API для зовнішнього доступу
@@ -852,6 +857,7 @@ window.commentManager = {
     getInitials,
     MAX_COMMENTS
 };
+
 
 
 //=====================================перевірка для форм логіну та реєстрації=====================================
@@ -1035,6 +1041,38 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const downloadLinks = document.querySelectorAll('.download-link');
+
+    downloadLinks.forEach(link => {
+        // Знаходимо span для повідомлення поруч з файлом
+        const errorMessage = link.parentElement.querySelector('.error-message');
+
+        link.addEventListener('click', function (e) {
+            const currentUser = localStorage.getItem('currentUser');
+
+            if (!currentUser) {
+                e.preventDefault(); // Блокуємо завантаження
+
+                if (errorMessage) {
+                    errorMessage.textContent = "You must be logged in to download files.";
+                    errorMessage.classList.add('visible'); // Додати клас для стилю
+
+                    // Прибираємо повідомлення через 3 сек
+                    setTimeout(() => {
+                        errorMessage.textContent = "";
+                        errorMessage.classList.remove('visible');
+                    }, 3000);
+                }
+            }
+        });
+    });
+});
+
 // ====================SUBSCRIBE FORM MAIN ===================
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -1076,34 +1114,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const downloadLinks = document.querySelectorAll('.download-link');
-
-    downloadLinks.forEach(link => {
-        // Знаходимо span для повідомлення поруч з файлом
-        const errorMessage = link.parentElement.querySelector('.error-message');
-
-        link.addEventListener('click', function (e) {
-            const currentUser = localStorage.getItem('currentUser');
-
-            if (!currentUser) {
-                e.preventDefault(); // Блокуємо завантаження
-
-                if (errorMessage) {
-                    errorMessage.textContent = "You must be logged in to download files.";
-                    errorMessage.classList.add('visible'); // Додати клас для стилю
-
-                    // Прибираємо повідомлення через 3 сек
-                    setTimeout(() => {
-                        errorMessage.textContent = "";
-                        errorMessage.classList.remove('visible');
-                    }, 3000);
-                }
-            }
-        });
-    });
-});
-
