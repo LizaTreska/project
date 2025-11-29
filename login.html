@@ -8,6 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+     <script src="./script.js" defer></script>
+
+     <script src="https://cdn.jsdelivr.net/npm/swiper@8.4.5/swiper-bundle.min.js"></script>
   </head>
   <body>
     <header class="header-form">
@@ -21,12 +25,22 @@
             <p>
               Log in to continue exploring projects and connecting <br>with the community
             </p>
-            <div class="form-section">
-              <form action="/login" method="POST" id="loginForm">
-                <input type="email" name="email" placeholder="Email" required autocomplete="email">
-                <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
-                <button class="submit-btn" type="submit" disabled>Log in</button>
-              </form>
+            <div id="error"></div>
+            <form id="login-form" action="./user-profile.html"  method="GET" novalidate>
+  <div class="input-group">
+       <span class="error-message" id="emailError-login"></span>
+  <input id="email-login" type="email" name="email" placeholder="Email">
+</div>
+
+<div class="input-group">
+     <span class="error-message" id="passwordError-login"></span>
+  <input type="password" name="password" placeholder="Password" id="password-login">
+</div>
+
+
+  <button  class="submit-btn" type="submit">Log in</button>
+</form>
+
               <div class="login-links">
                 <p>Don't have an account? <a href="./regist.html">Sign up</a></p>
               </div>
@@ -79,7 +93,5 @@
             <p>License</p>
         </div>
     </footer>
-
-    <script src="./script.js"></script>
   </body>
 </html>

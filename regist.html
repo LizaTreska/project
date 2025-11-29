@@ -8,14 +8,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="./script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8.4.5/swiper-bundle.min.js"></script>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
   </head>
   <body>
-
-    
-    <!-- <header class="header-form">
-       <a href="./index.html"> <img src="./img/logo.png" alt="Логотип" class="header_logo">
-    </header>   ЗАВАЖАЄ ПРИ РЕЄСТРАЦІЇ--> 
-
     <main class="main-sign">
         <div class="form-signup">
           <div class="container">
@@ -23,14 +20,26 @@
             <p>
               Join our community to explore projects, share your ideas, and connect with others
             </p>
+            <div id="error"></div>
             <div class="form-section">
-              <form action="/sign_up" method="POST" id="registrationForm">
-                <input type="text" name="first_name" placeholder="First name" id="first-name" required autocomplete="given-name">
-                <input type="text" name="last_name" placeholder="Last name" id="last-name" required autocomplete="family-name">
-                <input type="email" name="email" placeholder="Email" id="email" required autocomplete="email">
-                <input type="password" name="password" placeholder="Password" id="password" required autocomplete="new-password">
-                <input type="password" name="confirm_password" placeholder="Confirm password" id="confirm-password" required autocomplete="new-password">
-                <button class="submit-btn" type="submit" id="submitDetails" disabled>Sign Up</button>
+              <form id="signup-form"  action="./login.html" method="GET" novalidate>
+                 <span class="error-message" id="nameError"></span>
+                <input id="first-name"  type="text" name="first_name" placeholder="First name" required>
+
+                 <span class="error-message" id="LNameError"></span>
+                <input id="last-name" type="text" name="last_name" placeholder="Last name"  required>
+
+                 <span class="error-message" id="emailError-signup"></span>
+                <input id="email-signup"  type="email" name="email" placeholder="Email" required>
+
+                 <span class="error-message" id="passwordError-signup"></span>
+                <input id="password-signup"  type="password" name="password" placeholder="Password" required>
+
+                 <span class="error-message" id="confirmPasswordError"></span>
+                <input id="confirm-password"  type="password" name="confirm_password" placeholder="Confirm password" required>
+
+
+                <button id="submitDetails" class="submit-btn" type="submit">Sign Up</button>
               </form>
               <div class="login-links">
                 <p>Already have an account? <a href="./login.html">Log in</a></p>
@@ -85,7 +94,5 @@
             <p>License</p>
         </div>
     </footer>
-
-    <script src="./script.js"></script>
   </body>
 </html>

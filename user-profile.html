@@ -29,7 +29,7 @@
   <h1 class="welcome">Welcome!</h1>
 
   <div class="container-user">
-    <form class="user-form">
+    <form id="user-form" class="user-form">
       <div class="form-row">
         <label class="my-profile">My profile</label>
         <div class="gender">
@@ -57,47 +57,49 @@
         <div class="info">
           <div class="form-row">
             <label class="name-user">First name*</label>
-            <input type="text" value="Soso" />
+             <span class="error-message" id="nameUser-error"></span>
+            <input id="name-user" type="text" value="Soso" />
           </div>
 
           <div class="form-row">
             <label class="name-user">Last name*</label>
-            <input type="text" value="Pavliashvili" />
+             <span class="error-message" id="LNameUser-error"></span>
+            <input id="LNameUser" type="text" value="Pavliashvili" />
           </div>
 
           <div class="form-row">
             <label class="name-user">Email address*</label>
-            <input type="email" value="soso.pavili@example.com" />
+                <span class="error-message" id="emailUser-error"></span>
+            <input id="email-user" type="email" value="soso.pavili@example.com" />
           </div>
 
           <div class="form-row">
             <label class="name-user">Phone*</label>
             <div class="phone">
-              <input type="text" value="+123" class="code" />
-              <input type="text" value="4567890" class="number" />
+                  <span class="error-message" id="phone-error"></span>
+              <input id="phone-code" type="text" value="+123" class="code" />
+              <input id="phone-number" type="text" value="4567890" class="number" />
             </div>
           </div>
 
           <div class="form-row">
             <label class="name-user">Date of birth</label>
+                <span class="error-message" id="date-error"></span>
             <div class="dob">
-              <input type="text" value="03" maxlength="2" />
-              <input type="text" value="07" maxlength="2" />
-              <input type="text" value="1986" maxlength="4" />
+              <input id="day" type="text" value="03" maxlength="2" />
+              <input id="mounth" type="text" value="07" maxlength="2" />
+              <input id="year" type="text" value="1986" maxlength="4" />
             </div>
           </div>
 
           <div class="buttons-user">
             <button type="button" class="logout">Log out</button>
-            <button type="button" class="edit">Edit profile</button>
+            <button  type="button" class="edit">Edit profile</button>
           </div>
         </div>
       </div>
     </form>
   </div>
-
-   <script src="https://cdn.jsdelivr.net/npm/swiper@8.4.5/swiper-bundle.min.js"></script>
-  <script src="script.js" defer></script>
 </main>
 
    <footer class="footer">
@@ -146,5 +148,7 @@
     <p>License</p>
   </div>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/swiper@8.4.5/swiper-bundle.min.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
