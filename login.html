@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Спадщина - Login</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header class="header-form">
+        <a href="./index.html"> <img src="./img/logo.png" alt="Логотип" class="header_logo" /></a>
+    </header>
+
+    <main class="main-sign">
+        <div class="form-login">
+          <div class="container">
+            <h1 class="form-title">Welcome Back</h1>
+            <p>
+              Log in to continue exploring projects and connecting <br>with the community
+            </p>
+            <div class="form-section">
+              <form action="/login" method="POST" id="loginForm">
+                <input type="email" name="email" placeholder="Email" required autocomplete="email">
+                <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
+                <button class="submit-btn" type="submit" disabled>Log in</button>
+              </form>
+              <div class="login-links">
+                <p>Don't have an account? <a href="./regist.html">Sign up</a></p>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <div class="wide-line line-01"></div>
+</div>
+    </main>
+
+    <footer class="footer">
+        <div class="container-footer">
+            <div class="footer-text">
+                <p>Got a project <br> in mind? – <br> Let's work together</p>
+            </div>
+            <div class="contacts">
+                <div class="privacy">
+                    <h4>More about Humap</h4>
+                    <div class="line"></div>
+                    <ul>
+                        <li><a href="">About Humap</a></li>
+                        <li><a href="">Privacy policy</a></li>
+                        <li><a href="">Copyright takedown request</a></li>
+                        <li><a href="">Security</a></li>
+                    </ul>
+                </div>
+                <div class="social-media">
+                    <h4>Follow us:</h4>
+                    <div class="line"></div>
+                    <div class="icons">
+                        <ul>
+                            <li>
+                                <a href=""><img src="./img/Facebook.png" alt="Facebook"></a>
+                            </li>
+                            <li>
+                                <a href=""><img src="./img/Instagram.png" alt="Instagram"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="email">
+                    <h4>Email us:</h4>
+                    <div class="line"></div>
+                    <a href="mailto:info@roots.com">info@roots.com</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>All right reserved. ©2025</p>
+            <p>License</p>
+        </div>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

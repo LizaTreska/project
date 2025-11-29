@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1764014904573,
+    "email": "elizaveta.lebed5@yandex.ru",
+    "password": "LizaLebed55",
+    "name": "",
+    "createdAt": "2025-11-24T20:08:24.573Z",
+    "role": "user"
+  },
+  {
+    "id": 1764014983041,
+    "email": "liza.lebed5@yandex.ru",
+    "password": "LizaLebed55",
+    "name": "",
+    "createdAt": "2025-11-24T20:09:43.041Z",
+    "role": "user"
+  }
+]

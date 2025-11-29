@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Success</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+ <header class="header">
+  <a href="./index.html"> <img src="./img/logo.png" alt="Логотип" class="header_logo">
+    <nav class="header_nav">
+      <ul>
+        <li><a href="./index.html" class="header_link_home">Home</a></li>
+        <li><a href="./about-us.html" class="header_link_abus">About us</a></li>
+        <li><a href="./gallery.html" class="header_link_gallery">Gallery</a></li>
+        <li><a href="./members.html" class="header_link_contacts">Members</a></li>
+        <li><a href="./item.html" class="header_link_contacts">Tools</a></li>
+        <li><a href="./form.html" class="header_link_contacts">Join Us</a></li>
+      </ul>
+    </nav>
+    <div class="avatar-icon">
+        <div class="avatar-circle" id="headerAvatar"><a href="./user-profile.html">SP</a></div>
+    </div>
+</header>
+   <main class="main-us">
+  <h1 class="welcome">Welcome!</h1>
+
+  <div class="container-user">
+    <form class="user-form">
+      <div class="form-row">
+        <label class="my-profile">My profile</label>
+        <div class="gender">
+          <label>
+            <input type="radio" name="gender" value="male">
+            <span class="custom-radio"></span> Male
+          </label>
+          <label>
+            <input type="radio" name="gender" value="female" checked>
+            <span class="custom-radio"></span> Female
+          </label>
+        </div>
+      </div>
+
+      <div class="profile-box">
+        <div class="card">
+          <label for="avatarInput">
+            <div class="avatar" id="avatarDisplay">SP</div>
+          </label>
+          <input type="file" id="avatarInput" accept="image/*" hidden />
+          <p class="name">Soso Pavliashvili</p>
+          <p class="email">soso.pavili@example.com</p>
+        </div>
+
+        <div class="info">
+          <div class="form-row">
+            <label class="name-user">First name*</label>
+            <input type="text" value="Soso" />
+          </div>
+
+          <div class="form-row">
+            <label class="name-user">Last name*</label>
+            <input type="text" value="Pavliashvili" />
+          </div>
+
+          <div class="form-row">
+            <label class="name-user">Email address*</label>
+            <input type="email" value="soso.pavili@example.com" />
+          </div>
+
+          <div class="form-row">
+            <label class="name-user">Phone*</label>
+            <div class="phone">
+              <input type="text" value="+123" class="code" />
+              <input type="text" value="4567890" class="number" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="name-user">Date of birth</label>
+            <div class="dob">
+              <input type="text" value="03" maxlength="2" />
+              <input type="text" value="07" maxlength="2" />
+              <input type="text" value="1986" maxlength="4" />
+            </div>
+          </div>
+
+          <div class="buttons-user">
+            <button type="button" class="logout">Log out</button>
+            <button type="button" class="edit">Edit profile</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/swiper@8.4.5/swiper-bundle.min.js"></script>
+  <script src="script.js" defer></script>
+</main>
+
+   <footer class="footer">
+  <div class="container-footer">
+    <div class="footer-text">
+      <p>Got a project <br> in mind? – <br> Let's work together</p>
+    </div>
+
+    <div class="contacts">
+      <div class="privacy">
+        <h4>More about Humap</h4>
+        <div class="line"></div>
+        <ul>
+          <li> <a href="">About Humap</a></li>
+          <li><a href="">Privacy policy</a></li>
+          <li><a href="" >Copyright takedown request</a></li>
+          <li><a href="">Security</a></li>
+        </ul>
+      </div>
+
+      <div class="social-media">
+        <h4>Follow us:</h4>
+        <div class="line"></div>
+        <div class="icons">
+            <ul>
+                <li>
+                    <a href=""><img src="./img/Facebook.png" alt="Facebook"></a>
+                </li>
+                <li>
+                     <a href=""><img src="./img/Instagram.png" alt="Instagram"></a>
+                </li>
+            </ul>
+        </div>
+      </div>
+
+      <div class="email">
+        <h4>Email us:</h4>
+        <div class="line"></div>
+        <a href="mailto:info@roots.com" >info@roots.com</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>All right reserved. ©2025</p>
+    <p>License</p>
+  </div>
+</footer>
+</body>
+</html>
