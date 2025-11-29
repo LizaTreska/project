@@ -77,7 +77,8 @@ h2, h3 {
 }
 
 
-#headerAvatar .btn-header {
+
+.btn-header {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,7 +94,7 @@ h2, h3 {
   transition: opacity 0.3s;
 }
 
-#headerAvatar .btn-header:hover {
+ .btn-header:hover {
   opacity: 0.8;
 }
 
@@ -1087,6 +1088,15 @@ height: 64px;
   margin-left: auto;
 }
 
+.button-view {
+  transition: transform 0.3s ease; /* плавний ефект */
+}
+
+.button-view:hover {
+  transform: scale(1.05); /* збільшення на 5% */
+}
+
+
 
 .logout, .edit, .cancel, .save {
   width: 100%;
@@ -1592,7 +1602,13 @@ text-align: center;
   gap: 80px;
   margin-bottom: 71px;
 }
+.download-link {
+  transition: opacity 0.3s ease; 
+}
 
+.download-link:hover {
+  opacity: 0.7; 
+}
 .files-download {
 background-color: rgba(179, 174, 163, 0.21);
 box-shadow: 3px 13px 17.3px -1px rgba(0, 0, 0, 0.25);
@@ -1886,6 +1902,7 @@ align-items: center;
     width: 100%;
     cursor: grab;
     position: relative;
+    margin-bottom: 95px;
 }
 
 .swiper-wrapper-horizontal {
@@ -1903,7 +1920,8 @@ align-items: center;
 .swiper-slide-horizontal img {
     width: 100%;
     height: auto;
-    display: block;
+   display: block;
+    visibility: visible;
 }
 
 .swiper-container-horizontal:active {
