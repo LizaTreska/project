@@ -23,7 +23,9 @@
                 <li><a href="./form.html" class="header_link_contacts">Join Us</a></li>
             </ul>
         </nav>
-        <a href="./regist.html" class="btn-header">Get in touch</a>
+        <div class="avatar-icon">
+        <div class="avatar-circle" id="headerAvatar"><a href="./user-profile.html">SP</a></div>
+    </div>
     </header>
 
 
@@ -131,27 +133,29 @@
                         <h3>Get in touch</h3>
                         <p>Get in touch via email or telephone</p>
                         <div class="arrow">
-                            <a href="./regist.html"><button class="btn_nav">
+                            <a href="./regist.html"><button class="btn_nav"></a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="form">
-            <h2>Stay Updated with Us</h2>
-            <p>Keep in touch with the latest news and updates from us</p>
-            <div class="form-main">
-                <div class="container-form">
-                    <div class="design"></div>
-                    <form action="">
-                        <input type="text" name="name" placeholder="Name" required>
-                        <input type="email" name="email" placeholder="Email" required>
-                    </form>
-                    <button class="submit-btn">Subscribe</button>
-                </div>
-            </div>
-        </section>
+       <section class="form">
+    <h2>Stay Updated with Us</h2>
+    <p>Keep in touch with the latest news and updates from us</p>
+    <div class="form-main">
+        <div class="container-form">
+            <div class="design"></div>
+            <form id="subscribe-form" novalidate>
+                <span class="error-message" id="nameError-sub"></span>
+                <input id="name-sub"type="text" name="name" placeholder="Name" >
+                <span class="error-message" id="emailError-sub"></span>
+                <input id="email-sub" type="email" name="email" placeholder="Email">
+                <button id="submit-sub" type="submit" class="submit-btn">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</section>
     </main>
 
     <footer class="footer">

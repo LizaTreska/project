@@ -77,24 +77,24 @@ h2, h3 {
 }
 
 
-.btn-header {
+#headerAvatar .btn-header {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  font-weight: 500;
-  font-size: 18px;
-  border-radius: 20px;
-
   width: 131px;
   height: 51px;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 20px;
   border: 3px solid #1b18126e;
-
+  text-decoration: none;
+  color: #000;
+  background-color: transparent;
   transition: opacity 0.3s;
 }
 
-.btn-header:hover {
-  opacity: 0.7;
+#headerAvatar .btn-header:hover {
+  opacity: 0.8;
 }
 
 .header ul {
@@ -1908,4 +1908,12 @@ align-items: center;
 
 .swiper-container-horizontal:active {
     cursor: grabbing;
+}
+
+.error-message {
+  color: #9b2d30;
+  font-size: 16px;
+  margin-bottom: 10px;
+  display: block;
+  text-align: center;
 }

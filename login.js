@@ -1,64 +1,87 @@
-/*----------- LOGIN FORM + NESTJS API -----------*/
+document.addEventListener('DOMContentLoaded', function () {
 
-function initLoginForm() {
-    const loginForm = document.getElementById('loginForm');
-
+    const loginForm = document.getElementById('login-form');
     if (!loginForm) return;
+
+    const emailInput = loginForm.querySelector('#email-login');
+    const passwordInput = loginForm.querySelector('#password-login');
+    const emailError = loginForm.querySelector('#emailError-login');
+    const passwordError = loginForm.querySelector('#passwordError-login');
 
     loginForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const formData = new FormData(this);
-        const email = formData.get('email').trim();
-        const password = formData.get('password').trim();
+        let valid = true;
 
-        if (!email || !password) {
-            showMessage('Будь ласка, заповніть всі поля', 'error');
-            return;
+        // --- Email validation ---
+        if (emailInput.value.trim() === '') {
+            emailError.textContent = "Email is required!";
+            valid = false;
+        } else if (!emailInput.value.includes('@') || !emailInput.value.includes('.')) {
+            emailError.textContent = "Enter a correct email address!";
+            valid = false;
+        } else {
+            emailError.textContent = "";
         }
 
-        const submitBtn = this.querySelector('.submit-btn');
+        // --- Password validation ---
+        const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/;
+
+        if (passwordInput.value.trim() === '') {
+            passwordError.textContent = "Password is required!";
+            valid = false;
+        } else if (!passwordPattern.test(passwordInput.value)) {
+            passwordError.textContent = "Password ≥6 characters, contains letters, numbers and special characters";
+            valid = false;
+        } else {
+            passwordError.textContent = "";
+        }
+
+        if (!valid) return;
+
+        // --- Submit button handling ---
+        const submitBtn = loginForm.querySelector('.submit-btn');
         const originalText = submitBtn.textContent;
+
         submitBtn.textContent = 'Logging in...';
         submitBtn.disabled = true;
-
+ 
         try {
-            const response = await fetch('http://99.253.170.119:5000/api/auth/login', {
+            const response = await fetch('http://99.253.170.119:5000/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({
+                    email: emailInput.value.trim(),
+                    password: passwordInput.value.trim(),
+                }),
             });
 
             if (!response.ok) {
-                const error = await response.json();
-                showMessage(error.message || 'Помилка входу', 'error');
+                const error = await response.json().catch(() => ({ message: 'Unknown error' }));
+                console.log('Error status:', response.status, error);
+                emailError.textContent = error.message || 'Login failed';
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
                 return;
             }
 
             const result = await response.json();
-            console.log('LOGIN OK:', result);
+            console.log("LOGIN SUCCESS:", result);
 
-            // ⬇️ Зберігаємо токен
             localStorage.setItem('token', result.token);
 
-            showMessage('Успішний вхід!', 'success');
-
-            setTimeout(() => {
-                window.location.href = '/index.html';
-            }, 1200);
+            window.location.href = "/index.html";
 
         } catch (err) {
             console.error(err);
-            showMessage('Помилка з’єднання з сервером', 'error');
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+            emailError.textContent = "Connection error with server";
         }
+
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
     });
-}
 
-document.addEventListener("DOMContentLoaded", initLoginForm);
-
+    console.log("Login form initialized");
+});
