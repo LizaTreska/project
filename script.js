@@ -522,6 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    
     let originalValues = {};
 
     // ===== Utilities =====
@@ -650,12 +651,24 @@ document.addEventListener('DOMContentLoaded', () => {
     };  
 
     const handleAvatarChange = e => {
-        const file = e.target.files[0];
-        if (!file?.type.match('image.*')) return alert('Please select an image file');
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file');
+            return;
+        }
         const reader = new FileReader();
-        reader.onload = ev => { el.avatar.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`; saveToLocalStorage(); };
+        reader.onload = function(ev) {
+            // ev.target.result містить data URL
+            el.avatar.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+            saveToLocalStorage();
+            // Після зміни можна оновити хедер, якщо ви зберігаєте аватар у currentUser
+            updateHeader();
+        };
+        reader.onerror = () => alert('Failed to read file');
         reader.readAsDataURL(file);
     };
+
 
     const createCancelSaveButtons = () => {
         el.buttonsContainer.innerHTML = '';
