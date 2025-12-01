@@ -1057,9 +1057,12 @@ height: 64px;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-
 }
 
+.comment_form .form-row {
+  gap: 52px;
+}
+.title-item
 .name-user {
 margin-right:  20px;
   color: rgba(0, 0, 0, 0.63);
@@ -1579,6 +1582,33 @@ gap:90px;
   color: rgba(38, 34, 23, 0.6);
   margin-bottom: 10px;
 }
+.thumbContainer-vertical {
+    position: relative;
+    display: inline-block;
+}
+
+.thumbContainer-vertical img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.caption {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.5); /* білий напівпрозорий фон */
+    color: rgba(38, 34, 23, 1); 
+    text-align: center;
+    padding: 15px 23px;
+    font-size: 32px;
+    box-sizing: border-box;
+    height: 90px;
+    font-weight: 700;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
 
 .title-item {
   margin: 0;
@@ -1776,7 +1806,6 @@ align-items: center;
 .send:hover {
   background-color: rgba(127, 135, 167, 1);
 }
-
 .recent-comments {
   width: 100%;
   max-width: 952px;
