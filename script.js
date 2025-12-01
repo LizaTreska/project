@@ -1335,3 +1335,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+document.addEventListener("DOMContentLoaded", () => {
+    const animatedTitles = document.querySelectorAll(".title-left, .title-right");
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+            }
+        });
+    }, { threshold: 0.3 });
+
+    animatedTitles.forEach(title => observer.observe(title));
+});

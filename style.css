@@ -1989,3 +1989,30 @@ align-items: center;
     margin-top: 10px;
     text-align: center;
 }
+
+/* Початковий стан — невидимо + зміщення */
+.title-cont {
+    opacity: 0;
+    transform: translateX(0);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Анімація зліва */
+.title-left {
+    transform: translateX(-80px);
+}
+
+.title-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Анімація справа */
+.title-right {
+    transform: translateX(80px);
+}
+
+.title-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
