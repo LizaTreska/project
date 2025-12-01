@@ -238,35 +238,57 @@ document.addEventListener('DOMContentLoaded', function() {
 /*ГОРИЗОНТАЛЬНИЙ СЛАЙДЕР ДЛЯ ГАЛЕРЕЇ*/
 /*ГОРИЗОНТАЛЬНИЙ СЛАЙДЕР ДЛЯ ГАЛЕРЕЇ*/
 document.addEventListener('DOMContentLoaded', function() {
+
     class HorizontalSlider {
         constructor(containerSelector) {
             this.container = document.querySelector(containerSelector);
-                
+            if (!this.container) return; // Якщо контейнера немає, припиняємо ініціалізацію
+
             this.wrapper = this.container.querySelector('.swiper-wrapper-horizontal');
+            if (!this.wrapper) return;
+
             this.slides = this.container.querySelectorAll('.swiper-slide-horizontal');
-            
+
+            if (!this.slides || this.slides.length === 0) return;
+
             this.currentIndex = 0;
             this.isAnimating = false;
             this.visibleSlides = 3;
             this.spaceBetween = 51;
-            
+
             this.init();
             this.bindEvents();
-            this.startAutoPlay();
         }
-        
+
         init() {
             this.slideWidth = this.slides[0].offsetWidth;
-            console.log('Slide width:', this.slideWidth);
-            
+
+            // Підвантажуємо всі зображення одразу
+            this.preloadImages(this.slides);
+
             this.cloneSlides();
-            
+
+            // Після клонування оновлюємо колекцію слайдів
+            this.allSlides = this.wrapper.querySelectorAll('.swiper-slide-horizontal');
+            this.totalSlides = this.allSlides.length;
+
             this.currentIndex = this.visibleSlides;
             this.updatePosition();
-            
+
             this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
+            this.container.style.cursor = 'grab';
         }
-        
+
+        preloadImages(slides) {
+            slides.forEach(slide => {
+                const img = slide.querySelector('img');
+                if (img) {
+                    const src = img.getAttribute('data-src') || img.src;
+                    img.src = src; // Примусово підвантажуємо
+                }
+            });
+        }
+
         cloneSlides() {
             // Клонуємо останні слайди на початок
             for (let i = this.slides.length - 1; i >= this.slides.length - this.visibleSlides; i--) {
@@ -274,80 +296,73 @@ document.addEventListener('DOMContentLoaded', function() {
                 clone.classList.add('cloned');
                 this.wrapper.insertBefore(clone, this.wrapper.firstChild);
             }
-            
+
             // Клонуємо перші слайди в кінець
             for (let i = 0; i < this.visibleSlides; i++) {
                 const clone = this.slides[i].cloneNode(true);
                 clone.classList.add('cloned');
                 this.wrapper.appendChild(clone);
             }
-            
-            // Оновлюємо колекцію слайдів
-            this.allSlides = this.wrapper.querySelectorAll('.swiper-slide-horizontal');
-            this.totalSlides = this.allSlides.length;
+
+            // Підвантажуємо картинки в клонованих слайдах
+            this.preloadImages(this.wrapper.querySelectorAll('.cloned'));
         }
-        
+
         updatePosition() {
-            if (!this.allSlides || this.allSlides.length === 0) return;
-            
             const translateX = -(this.currentIndex * (this.slideWidth + this.spaceBetween));
             this.wrapper.style.transform = `translateX(${translateX}px)`;
         }
-        
+
         next() {
             if (this.isAnimating) return;
             this.isAnimating = true;
-            
+
             this.currentIndex++;
             this.updatePosition();
-            
+
             setTimeout(() => {
                 this.checkBounds();
                 this.isAnimating = false;
             }, 800);
         }
-        
+
         prev() {
             if (this.isAnimating) return;
             this.isAnimating = true;
-            
+
             this.currentIndex--;
             this.updatePosition();
-            
+
             setTimeout(() => {
                 this.checkBounds();
                 this.isAnimating = false;
             }, 800);
         }
-        
+
         checkBounds() {
-            // Якщо дійшли до кінця клонів справа
+            // Якщо дійшли до клонів справа
             if (this.currentIndex >= this.totalSlides - this.visibleSlides) {
+                this.wrapper.style.transition = 'none';
+                this.currentIndex = this.visibleSlides;
+                this.updatePosition();
                 setTimeout(() => {
-                    this.wrapper.style.transition = 'none';
-                    this.currentIndex = this.visibleSlides;
-                    this.updatePosition();
-                    setTimeout(() => {
-                        this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
-                    }, 50);
+                    this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
                 }, 50);
             }
-            
-            // Якщо дійшли до початку клонів зліва
-            if (this.currentIndex <= 0) {
+
+            // Якщо дійшли до клонів зліва
+            if (this.currentIndex < this.visibleSlides) {
+                this.wrapper.style.transition = 'none';
+                this.currentIndex = this.totalSlides - (2 * this.visibleSlides);
+                this.updatePosition();
                 setTimeout(() => {
-                    this.wrapper.style.transition = 'none';
-                    this.currentIndex = this.totalSlides - (2 * this.visibleSlides);
-                    this.updatePosition();
-                    setTimeout(() => {
-                        this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
-                    }, 50);
+                    this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
                 }, 50);
             }
         }
-        
+
         bindEvents() {
-            // Стрілки клавіатури
+            // Клавіатура
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowRight') {
                     e.preventDefault();
@@ -357,24 +372,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.prev();
                 }
             });
-            
+
             // Колесо миші
             this.container.addEventListener('wheel', (e) => {
                 e.preventDefault();
                 if (this.isAnimating) return;
-                
+
                 if (e.deltaY > 0 || e.deltaX > 0) {
                     this.next();
                 } else {
                     this.prev();
                 }
             });
-            
+
             // Drag & Drop
             let isDragging = false;
             let startX = 0;
             let initialTranslate = 0;
-            
+
             this.container.addEventListener('mousedown', (e) => {
                 isDragging = true;
                 startX = e.clientX;
@@ -382,50 +397,61 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.wrapper.style.transition = 'none';
                 this.container.style.cursor = 'grabbing';
             });
-            
+
             document.addEventListener('mousemove', (e) => {
                 if (!isDragging) return;
-                
+
                 const diff = startX - e.clientX;
                 const resistance = 3;
                 const translateX = -initialTranslate + (diff / resistance);
                 this.wrapper.style.transform = `translateX(${translateX}px)`;
             });
-            
+
             document.addEventListener('mouseup', (e) => {
                 if (!isDragging) return;
-                
                 isDragging = false;
-                const endX = e.clientX;
-                const diff = startX - endX;
-                
+
+                const diff = startX - e.clientX;
                 this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
                 this.container.style.cursor = 'grab';
-                
+
                 if (Math.abs(diff) > 50) {
-                    if (diff > 0) {
-                        this.next();
-                    } else {
-                        this.prev();
-                    }
+                    diff > 0 ? this.next() : this.prev();
+                } else {
+                    this.updatePosition();
+                }
+            });
+
+            this.container.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const diff = startX - e.touches[0].clientX;
+                const resistance = 3;
+                const translateX = -initialTranslate + (diff / resistance);
+                this.wrapper.style.transform = `translateX(${translateX}px)`;
+            });
+
+            this.container.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+
+                const diff = startX - e.changedTouches[0].clientX;
+                this.wrapper.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)';
+
+                if (Math.abs(diff) > 50) {
+                    diff > 0 ? this.next() : this.prev();
                 } else {
                     this.updatePosition();
                 }
             });
         }
-        
-        startAutoPlay() {
-            setInterval(() => {
-                if (!this.isAnimating) {
-                    this.next();
-                }
-            }, 4000);
-        }
     }
-    
-    // Ініціалізація слайдера
-    const horizontalSlider = new HorizontalSlider('.swiper-container-horizontal');
+
+    const containerExists = document.querySelector('.swiper-container-horizontal');
+    if (containerExists) {
+        new HorizontalSlider('.swiper-container-horizontal');
+    }
 });
+
 
 
 /*SCROLL TO MAP FUNCTION FOR MAIN PAGE*/
@@ -441,7 +467,7 @@ function scrollToMap() {
 }
 
 
-//============================================================USER PROFILE PAFE====================================================
+//============================================================USER PROFILE PAGE====================================================
 
 document.addEventListener('DOMContentLoaded', () => {
     const profileForm = document.querySelector('.user-form');
@@ -455,22 +481,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
 
         if (!currentUser || !currentUser.firstName || !currentUser.lastName) {
-            // Незареєстрований → кнопка Get in touch
-            headerAvatar.innerHTML = `
-                <a href="./login.html" class="btn-header">
-                Get in touch
-            </a>
-            `;
-        } else {
-            // Зареєстрований → аватар з ініціалами
-            const firstInitial = currentUser.firstName[0].toUpperCase();
-            const lastInitial = currentUser.lastName[0].toUpperCase();
-            headerAvatar.innerHTML = `
-                <div class="avatar-circle">
-                    <a href="./user-profile.html">${firstInitial}${lastInitial}</a>
-                </div>
-            `;
-        }
+    // Незареєстрований → кнопка Get in touch
+    headerAvatar.innerHTML = `<a href="./login.html" class="btn-header">Get in touch</a>`;
+    headerAvatar.classList.remove('avatar-circle'); // видаляємо стиль круга
+} else {
+    // Зареєстрований → аватар з ініціалами
+    const firstInitial = currentUser.firstName[0].toUpperCase();
+    const lastInitial = currentUser.lastName[0].toUpperCase();
+    headerAvatar.innerHTML = `<div class="avatar-circle"><a href="./user-profile.html">${firstInitial}${lastInitial}</a></div>`;
+}
+
     }
 
     updateHeader();
@@ -621,11 +641,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutUser = () => {
         if (confirm('Are you sure you want to log out?')) {
             localStorage.removeItem('currentUser');
-            updateHeader(); // <== тут оновлюємо аватар
-            alert('You have been logged out!');
-            window.location.href = './index.html';
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
+            updateHeader(); // оновити аватар або шапку
+            // краще без alert, щоб не заважав
+            window.location.href = './login.html';  // Переадресація на логін
         }
-    };
+    };  
 
     const handleAvatarChange = e => {
         const file = e.target.files[0];
@@ -654,92 +676,123 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ===== Initialization =====
-    const initProfile = () => {
-        const data = loadFromLocalStorage();
-        if (data) {
-            el.firstNameInput.value = data.firstName;
-            el.lastNameInput.value = data.lastName;
-            el.emailInput.value = data.email;
-            el.avatar.innerHTML = data.avatar;
-            el.nameDisplay.textContent = `${data.firstName} ${data.lastName}`;
-            el.emailDisplay.textContent = data.email;
-        }
+const profileContainer = document.getElementById('profile-container');
+const loadingMessage = document.getElementById('loading-message');
+
+async function loadUserProfile() {
+    // Ховаємо профіль і показуємо лоадер
+    profileContainer.style.display = 'none';
+    loadingMessage.style.display = 'block';
+
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+    if (!token || !userId) {
+        window.location.href = './login.html';
+        return;
+    }
+
+    try {
+        const res = await fetch(`http://99.253.170.119:5000/users/${userId}`, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+
+        if (!res.ok) throw new Error('Failed to fetch profile');
+
+        const user = await res.json();
+
+        // Оновлюємо UI
+        el.firstNameInput.value = user.first_name;
+        el.lastNameInput.value = user.last_name;
+        el.emailInput.value = user.email;
+        el.nameDisplay.textContent = `${user.first_name} ${user.last_name}`;
+        el.emailDisplay.textContent = user.email;
+        if(user.image_url) el.avatar.innerHTML = `<img src="${user.image_url}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+
+        // Оновлюємо localStorage currentUser
+        localStorage.setItem('currentUser', JSON.stringify({
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            avatar: el.avatar.innerHTML,
+        }));
+
         saveOriginalValues();
         disableForm();
-        el.editBtn.addEventListener('click', startEdit);
-        el.logoutBtn.addEventListener('click', logoutUser);
-        el.avatarInput.addEventListener('change', handleAvatarChange);
-    };
+        restoreOriginalButtons();
 
-    initProfile();
-});
+        // Показуємо профіль і ховаємо лоадер
+        profileContainer.style.display = 'block';
+        loadingMessage.style.display = 'none';
 
-/*ITEM PAGE COMMENTS*/
-
-const initialComments = [
-    {
-        id: 1,
-        initials: "IK",
-        text: "This reconstruction looks amazing! I love the historical details.",
-        time: "2 hours ago"
-    },
-    {
-        id: 2,
-        initials: "MS", 
-        text: "Great work! Can you provide the Blender file as well?",
-        time: "2 weeks ago"
-    },
-    {
-        id: 3,
-        initials: "PV",
-        text: "This reconstruction looks amazing! I love the historical details.",
-        time: "2 hours ago"
+    } catch (e) {
+        console.error(e);
+        window.location.href = './login.html';
     }
-];
-
-const MAX_COMMENTS = 3; 
-
-// Функція для отримання ініціалів з імені
-function getInitials(name) {
-    if (!name) return 'UU';
-    
-    const parts = name.split(' ');
-    if (parts.length >= 2) {
-        return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
-    } else if (parts.length === 1) {
-        return parts[0].substring(0, 2).toUpperCase();
-    }
-    return 'UU';
 }
 
-// Функція для відображення коментарів
+loadUserProfile();
+});
+
+
+
+
+
+//=======================================================ITEM PAGE COMMENTS====================================================
+
+const initialComments = [
+    { id: 1, initials: "IK", text: "This reconstruction looks amazing! I love the historical details.", timestamp: new Date(Date.now() - 2 * 3600 * 1000).toISOString() },
+    { id: 2, initials: "MS", text: "Great work! Can you provide the Blender file as well?", timestamp: new Date(Date.now() - 14 * 24 * 3600 * 1000).toISOString() },
+    { id: 3, initials: "PV", text: "This reconstruction looks amazing! I love the historical details.", timestamp: new Date(Date.now() - 2 * 3600 * 1000).toISOString() }
+];
+
+const MAX_COMMENTS = 3;
+
+// Функція для отримання ініціалів
+function getInitials(name) {
+    if (!name) return 'UU';
+    const parts = name.split(' ');
+    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+    return parts[0].substring(0, 2).toUpperCase();
+}
+
+// Формат часу
+function formatTime(timestamp) {
+    const now = new Date();
+    const diff = Math.floor((now - new Date(timestamp)) / 1000);
+
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)} minute${Math.floor(diff / 60) > 1 ? 's' : ''} ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)} hour${Math.floor(diff / 3600) > 1 ? 's' : ''} ago`;
+    if (diff < 604800) return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? 's' : ''} ago`;
+    return `${Math.floor(diff / 604800)} week${Math.floor(diff / 604800) > 1 ? 's' : ''} ago`;
+}
+
+// Відображення коментарів
 function displayComments(comments) {
     const container = document.getElementById('commentsContainer');
-
     container.innerHTML = '';
 
-    if (comments.length === 0) {
+    if (!comments || comments.length === 0) {
         container.innerHTML = '<p class="no-comments">No comments yet. Be the first to comment!</p>';
         return;
     }
 
     const commentsToShow = comments.slice(0, MAX_COMMENTS);
-    
+
     commentsToShow.forEach(comment => {
         const commentElement = document.createElement('div');
         commentElement.className = 'comment-item';
         commentElement.innerHTML = `
-            <div class="comment-avatar">
-                ${comment.initials || getInitials(comment.name)}
-            </div>
+            <div class="comment-avatar">${comment.initials || getInitials(comment.name)}</div>
             <div class="comment-content">
                 <div class="comment-text">${comment.text}</div>
             </div>
-            <div class="comment-time">${comment.time}</div>
+            <div class="comment-time">${formatTime(comment.timestamp)}</div>
         `;
         container.appendChild(commentElement);
     });
-    
+
     if (comments.length > MAX_COMMENTS) {
         const hiddenCount = comments.length - MAX_COMMENTS;
         const hiddenElement = document.createElement('div');
@@ -747,179 +800,103 @@ function displayComments(comments) {
         hiddenElement.innerHTML = `<p>...and ${hiddenCount} more comments</p>`;
         container.appendChild(hiddenElement);
     }
-
 }
 
-// Функція для додавання нового коментаря
+// Додавання нового коментаря
 function addNewComment(name, email, text) {
     const initials = getInitials(name);
-    
     const newComment = {
         id: Date.now(),
-        name: name,
-        initials: initials,
-        text: text,
-        time: 'Just now'
+        name,
+        initials,
+        text,
+        timestamp: new Date().toISOString()
     };
 
     let comments = JSON.parse(localStorage.getItem('comments')) || [...initialComments];
-    
     comments.unshift(newComment);
-    
-    if (comments.length > MAX_COMMENTS) {
-        comments = comments.slice(0, MAX_COMMENTS);
-        console.log(`📝 Limited comments to ${MAX_COMMENTS}, removed oldest ones`);
-    }
-    
     localStorage.setItem('comments', JSON.stringify(comments));
-    
-    
+
     displayComments(comments);
-    
     return newComment;
 }
 
-// Функція для валідації форми
-function validateForm(name, email, text) {
+// Валідація тексту коментаря
+function validateForm(text) {
     const errors = [];
-
-    if (!name.trim()) {
-        errors.push('Name is required');
-    }
-
-    if (!email.trim()) {
-        errors.push('Email is required');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-        errors.push('Email is invalid');
-    }
-
-    if (!text.trim()) {
-        errors.push('Comment text is required');
-    } else if (text.trim().length < 5) {
-        errors.push('Comment must be at least 5 characters long');
-    }
-
+    if (!text.trim()) errors.push('Comment text is required');
+    else if (text.trim().length < 5) errors.push('Comment must be at least 5 characters long');
     return errors;
 }
 
-// Функція для показу повідомлення
+// Показ повідомлення
 function showMessage(message, type) {
     const messageDiv = document.getElementById('formMessage');
-    
     messageDiv.textContent = message;
     messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
     messageDiv.classList.remove('hidden');
-
-    setTimeout(() => {
-        messageDiv.classList.add('hidden');
-    }, 5000);
+    setTimeout(() => messageDiv.classList.add('hidden'), 5000);
 }
 
-// Функція для скидання форми
+// Скидання форми
 function resetForm() {
     const form = document.getElementById('commentForm');
-    if (form) {
-        form.reset();
-    }
+    if (form) form.reset();
 }
 
 // Ініціалізація коментарів
+// Ініціалізація коментарів
 function initComments() {
-    
     const commentsSection = document.querySelector('.comments');
-    if (!commentsSection) {
-        console.log('Not on comments page, skipping comments initialization');
-        return;
-    }
+    if (!commentsSection) return;
 
     const submitButton = document.getElementById('submitComment');
     const commentText = document.getElementById('commentText');
-    
+    const commentForm = document.getElementById('commentForm');
+
     if (submitButton && commentText) {
         submitButton.addEventListener('click', function(e) {
             e.preventDefault();
 
-            const name = document.getElementById('userName').value;
-            const email = document.getElementById('userEmail').value;
-            const text = document.getElementById('commentText').value;
+            // Перевірка авторизації
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                showMessage('You must be logged in to post a comment.', 'error');
+                return;
+            }
 
-            
-            const errors = validateForm(name, email, text);
-            
+            const text = commentText.value;
+            const errors = validateForm(text);
             if (errors.length > 0) {
                 showMessage(errors.join(', '), 'error');
                 return;
             }
 
-            const newComment = addNewComment(name, email, text);
-            
+            addNewComment(currentUser.name, currentUser.email, text);
             showMessage('Comment added successfully!', 'success');
-            
             resetForm();
         });
 
         commentText.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && e.ctrlKey) {
-                document.getElementById('submitComment').click();
-            }
+            if (e.key === 'Enter' && e.ctrlKey) submitButton.click();
         });
-        
-    } 
-
-    try {
-        const savedComments = JSON.parse(localStorage.getItem('comments'));
-        console.log('📦 Saved comments from localStorage:', savedComments);
-        
-        if (savedComments && savedComments.length > 0) {
-            displayComments(savedComments);
-            console.log('Displayed saved comments');
-        } else {
-            console.log('Using initial comments');
-            displayComments(initialComments);
-            localStorage.setItem('comments', JSON.stringify(initialComments));
-        }
-    } catch (error) {
-        console.error('❌ Error loading comments:', error);
-        displayComments(initialComments);
     }
-    
-    console.log('✅ Comments system initialized successfully');
+
+    const savedComments = JSON.parse(localStorage.getItem('comments'));
+    displayComments(savedComments && savedComments.length ? savedComments : initialComments);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🏠 DOM fully loaded and parsed');
-    initComments();
-});
 
-function getCommentCount() {
-    const comments = JSON.parse(localStorage.getItem('comments')) || initialComments;
-    return comments.length;
-}
+document.addEventListener('DOMContentLoaded', initComments);
 
-function getAllComments() {
-    return JSON.parse(localStorage.getItem('comments')) || initialComments;
-}
-
-function clearAllComments() {
-    if (confirm('Are you sure you want to clear all comments?')) {
-        localStorage.removeItem('comments');
-        displayComments(initialComments);
-        console.log('🗑️ All comments cleared');
-    }
-}
-
+// API для зовнішнього доступу
 window.commentManager = {
     addNewComment,
-    getCommentCount,
-    getAllComments,
-    clearAllComments,
     displayComments,
     initComments,
     getInitials,
     MAX_COMMENTS
 };
-
-console.log('✅ Comments module loaded');
 
 
 
@@ -1093,25 +1070,218 @@ document.addEventListener('DOMContentLoaded', function() {
             commentForm.reset();
             formMessage.textContent = "Коментар надіслано!";
             formMessage.style.color = "green";
+=======
+document.addEventListener('DOMContentLoaded', function () {
+
+  /* ================================
+        Л О Г І Н
+  ================================ */
+  const loginForm = document.getElementById('login-form');
+
+  if (loginForm) {
+    const emailInput = loginForm.querySelector('#email-login');
+    const passwordInput = loginForm.querySelector('#password-login');
+    const emailError = loginForm.querySelector('#emailError-login');
+    const passwordError = loginForm.querySelector('#passwordError-login');
+
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      let valid = true;
+
+      // --- EMAIL ---
+      if (emailInput.value.trim() === '') {
+        emailError.textContent = "Email is required!";
+        valid = false;
+      } else if (!emailInput.value.includes('@') || !emailInput.value.includes('.')) {
+        emailError.textContent = "Email must contain @ and .";
+        valid = false;
+      } else {
+        emailError.textContent = "";
+      }
+
+      // --- PASSWORD ---
+      const passwordPattern =
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/;
+
+      if (passwordInput.value.trim() === '') {
+        passwordError.textContent = "Password is required!";
+        valid = false;
+      } else if (!passwordPattern.test(passwordInput.value)) {
+        passwordError.textContent =
+          "Password must be at least 6 chars, contain letters, numbers and special symbol.";
+        valid = false;
+      } else {
+        passwordError.textContent = "";
+      }
+
+      if (!valid) return;
+
+      // ==========================
+      //     FETCH LOGIN REQUEST
+      // ==========================
+      const loginData = {
+        email: emailInput.value.trim(),
+        password: passwordInput.value.trim(),
+      };
+
+      fetch("http://99.253.170.119:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+
+          if (!data.success) {
+            emailError.textContent = data.message || "Incorrect email or password!";
+            return;
+          }
+
+          // Save token + user
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("currentUser", JSON.stringify(data.user));
+
+          window.location.href = "user-profile.html";
+        })
+        .catch((err) => {
+          console.error(err);
+          emailError.textContent = "Server connection error!";
         });
-    }
+    });
+  }
 
-    // Функція для відображення коментарів
-    function displayComments() {
-        const commentsContainer = document.getElementById('commentsContainer');
-        const comments = JSON.parse(localStorage.getItem('comments') || '[]');
-        commentsContainer.innerHTML = comments.map(c => `
-            <div class="comment-item">
-                <strong>${c.name}</strong> (${c.date})<br>
-                <p>${c.text}</p>
-            </div>
-        `).join('');
-    }
+  /* ================================
+        Р Е Є С Т Р А Ц І Я
+  ================================ */
+  const signupForm = document.getElementById('signup-form');
 
-    displayComments(); // Відразу показуємо наявні коментарі
+  if (signupForm) {
+    const firstName = signupForm.querySelector('#first-name');
+    const lastName = signupForm.querySelector('#last-name');
+    const email = signupForm.querySelector('#email-signup');
+    const password = signupForm.querySelector('#password-signup');
+    const confirmPassword = signupForm.querySelector('#confirm-password');
+
+    const firstNameError = signupForm.querySelector('#nameError');
+    const lastNameError = signupForm.querySelector('#LNameError');
+    const emailError = signupForm.querySelector('#emailError-signup');
+    const passwordError = signupForm.querySelector('#passwordError-signup');
+    const confirmPasswordError = signupForm.querySelector('#confirmPasswordError');
+
+    signupForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      let valid = true;
+
+      // --- FIRST NAME ---
+      if (firstName.value.trim() === '') {
+        firstNameError.textContent = "First name is required!";
+        valid = false;
+      } else firstNameError.textContent = "";
+
+      // --- LAST NAME ---
+      if (lastName.value.trim() === '') {
+        lastNameError.textContent = "Last name is required!";
+        valid = false;
+      } else lastNameError.textContent = "";
+
+      // --- EMAIL ---
+      if (email.value.trim() === '') {
+        emailError.textContent = "Email is required!";
+        valid = false;
+      } else if (!email.value.includes('@') || !email.value.includes('.')) {
+        emailError.textContent = "Enter a valid email!";
+        valid = false;
+      } else emailError.textContent = "";
+
+      // --- PASSWORD ---
+      const pwPattern =
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/;
+
+      if (password.value.trim() === '') {
+        passwordError.textContent = "Password is required!";
+        valid = false;
+      } else if (!pwPattern.test(password.value)) {
+        passwordError.textContent =
+          "Password must be ≥6 chars, include letters, numbers, and special chars";
+        valid = false;
+      } else passwordError.textContent = "";
+
+      // --- CONFIRM PASSWORD ---
+      if (confirmPassword.value.trim() === '') {
+        confirmPasswordError.textContent = "Confirm your password!";
+        valid = false;
+      } else if (confirmPassword.value !== password.value) {
+        confirmPasswordError.textContent = "Passwords do not match!";
+        valid = false;
+      } else confirmPasswordError.textContent = "";
+
+      if (!valid) return;
+
+      // ==========================
+      //     FETCH SIGN UP REQUEST
+      // ==========================
+      const newUser = {
+        firstName: firstName.value.trim(),
+        lastName: lastName.value.trim(),
+        email: email.value.trim(),
+        password: password.value.trim(),
+      };
+
+      fetch("http://99.253.170.119:5000/api/auth/registration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUser),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (!data.success) {
+            emailError.textContent = data.message || "Registration failed!";
+            return;
+          }
+
+          alert("Registration successful!");
+          window.location.href = "login.html";
+        })
+        .catch((err) => {
+          console.error(err);
+          emailError.textContent = "Server connection error!";
+        });
+    });
+}
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const downloadLinks = document.querySelectorAll('.download-link');
+
+    downloadLinks.forEach(link => {
+        // Знаходимо span для повідомлення поруч з файлом
+        const errorMessage = link.parentElement.querySelector('.error-message');
+
+        link.addEventListener('click', function (e) {
+            const currentUser = localStorage.getItem('currentUser');
+
+            if (!currentUser) {
+                e.preventDefault(); // Блокуємо завантаження
+
+                if (errorMessage) {
+                    errorMessage.textContent = "You must be logged in to download files.";
+                    errorMessage.classList.add('visible'); // Додати клас для стилю
+
+                    // Прибираємо повідомлення через 3 сек
+                    setTimeout(() => {
+                        errorMessage.textContent = "";
+                        errorMessage.classList.remove('visible');
+                    }, 3000);
+                }
+            }
+        });
+    });
 });
-
-*/
 
 // ====================SUBSCRIBE FORM MAIN ===================
 
@@ -1153,4 +1323,7 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
         }
     });
+
 });
+
+

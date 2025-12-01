@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!valid) return;
 
-        // --- Submit button handling ---
         const submitBtn = loginForm.querySelector('.submit-btn');
         const originalText = submitBtn.textContent;
 
@@ -70,9 +69,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const result = await response.json();
             console.log("LOGIN SUCCESS:", result);
 
+            // --- ЗБЕРЕГАЄМО TOKEN ---
             localStorage.setItem('token', result.token);
 
-            window.location.href = "/index.html";
+            // --- ЗБЕРЕГАЄМО userId ---
+            if (result.user && result.user.id) {
+                localStorage.setItem('userId', result.user.id);
+            } else {
+                console.warn("⚠️ У відповіді немає user.id, ось весь result:", result);
+            }
+
+            // --- ПЕРЕХІД НА ПРОФІЛЬ ---
+            window.location.href = "user-profile.html";
 
         } catch (err) {
             console.error(err);

@@ -1,4 +1,4 @@
-// --- РЕЄСТРАЦІЯ ---
+
 const signupForm = document.getElementById('signup-form');
 
 if (signupForm) {
@@ -59,7 +59,6 @@ if (signupForm) {
 
     if (!valid) return;
 
-    // --- JSON для бекенду з snake_case ---
     const payload = {
       first_name: firstName.value.trim(),
       last_name: lastName.value.trim(),
@@ -86,7 +85,7 @@ if (signupForm) {
 
     } catch (error) {
       console.error("Error:", error);
-      emailError.textContent = "Server unavailable!";
+      emailError.textContent = "Connection error with server!";
     }
   });
 }

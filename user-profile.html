@@ -25,7 +25,13 @@
         <div class="avatar-circle" id="headerAvatar"><a href="./user-profile.html">SP</a></div>
     </div>
 </header>
-   <main class="main-us">
+
+<div id="loading-message">
+    Logging<span class="dots"></span>
+  </div>
+
+<div id="profile-container" style="display:none;">
+     <main class="main-us">
   <h1 class="welcome">Welcome!</h1>
 
   <div class="container-user">
@@ -101,8 +107,10 @@
     </form>
   </div>
 </main>
+</div>
 
-   <footer class="footer">
+
+<footer class="footer">
   <div class="container-footer">
     <div class="footer-text">
       <p>Got a project <br> in mind? – <br> Let's work together</p>
@@ -150,5 +158,6 @@
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/swiper@8.4.5/swiper-bundle.min.js"></script>
   <script src="script.js" defer></script>
+  <script src="user-profile.js"></script>
 </body>
 </html>
