@@ -1270,22 +1270,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     const downloadLinks = document.querySelectorAll('.download-link');
+    const downloadText = document.querySelector('.download-text'); // блок з "Sign in to download"
+    const currentUser = localStorage.getItem('currentUser');
+
+    // Якщо користувач авторизований
+    if (currentUser) {
+        downloadText.style.display = 'none'; // сховати текст
+        downloadLinks.forEach(link => {
+            const fileBlock = link.parentElement;
+            fileBlock.classList.add('unlocked'); // додаємо клас для стилю
+            fileBlock.style.backgroundColor = 'rgba(147, 155, 187, 0.9)'; // змінюємо фон
+        });
+    }
 
     downloadLinks.forEach(link => {
-        // Знаходимо span для повідомлення поруч з файлом
         const errorMessage = link.parentElement.querySelector('.error-message');
 
         link.addEventListener('click', function (e) {
-            const currentUser = localStorage.getItem('currentUser');
-
             if (!currentUser) {
-                e.preventDefault(); // Блокуємо завантаження
-
+                e.preventDefault();
                 if (errorMessage) {
                     errorMessage.textContent = "You must be logged in to download files.";
-                    errorMessage.classList.add('visible'); // Додати клас для стилю
-
-                    // Прибираємо повідомлення через 3 сек
+                    errorMessage.classList.add('visible');
                     setTimeout(() => {
                         errorMessage.textContent = "";
                         errorMessage.classList.remove('visible');
@@ -1295,6 +1301,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
 
 // ====================SUBSCRIBE FORM MAIN ===================
 
@@ -1348,3 +1355,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+document.addEventListener("DOMContentLoaded", () => {
+    const animatedTitles = document.querySelectorAll(".title-left, .title-right");
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+            }
+        });
+    }, { threshold: 0.3 });
+
+    animatedTitles.forEach(title => observer.observe(title));
+});
