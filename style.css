@@ -479,7 +479,7 @@ input::placeholder {
   position: relative;
   overflow: hidden;
 }
-
+.card
 .submit-btn:hover {
   transform: scale(1.03);
   background-color: rgba(157, 165, 197, 1);
@@ -1046,56 +1046,65 @@ height: 64px;
 
 /* Form styling */
 
-.user {
+.user-form {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
 .form-row {
-  display: flex;
+   display: flex;
   align-items: center;
-  margin-bottom: 24px; /* Перенесіть margin сюди з інпута */
+  margin-bottom: 24px;
+
 }
 
 .name-user {
-  width: 160px;
+margin-right:  20px;
   color: rgba(0, 0, 0, 0.63);
   font-size: 20px;
   font-weight: 500;
+  text-align: right;
+  display: block;
+  width: 144px;
 }
 
 .info {
-  width: 654px; /* Загальна ширина для всіх інпутів у .info */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .info input[type="text"],
 .info input[type="email"] {
   
   flex: 1;
-  padding: 15px;
+ padding: 13px;
+ margin-left: 6px;
   border-radius: 10px;
   border: none;
   font-size: 20px;
   font-weight: 500;
   color: rgba(27, 24, 18, 1);
+  background-color: rgba(255, 255, 255, 0.6) !important;
+
 }
+
 
 .phone {
   display: flex;
   gap: 16px;
-  width: 554px; /* Замість flex: 1 */
+  width: 554px; 
 }
 
 .phone .code {
   width: 65px !important; /* Примусово */
-  flex: 0 0 65px !important; /* Фіксована ширина */
+  flex: 0 0 95px !important; /* Фіксована ширина */
   text-align: center;
 }
 
 .phone .number {
-  flex: 1;
-  min-width: 0;
+  width: 442px;
 }
 
 .dob {
@@ -1103,8 +1112,6 @@ height: 64px;
   gap: 16px;
   width: 554px;
 }
-
-
 
 .dob input {
   width: 100%;
@@ -1712,12 +1719,7 @@ align-items: center;
   margin-bottom: 57px;
 }
 
-.form-row {
-  display: flex;
-  gap: 52px;
-  font-weight: 500;
-  margin-bottom: 36px;
-}
+
 
 .input-comments {
   height: 71px;
@@ -1977,7 +1979,7 @@ align-items: center;
 .error-message {
   color: #9b2d30;
   font-size: 16px;
-  margin-bottom: 10px;
+
   display: block;
   text-align: center;
 }
@@ -1985,4 +1987,5 @@ align-items: center;
     color: #28a745;
     font-size: 14px;
     margin-top: 10px;
+    text-align: center;
 }
