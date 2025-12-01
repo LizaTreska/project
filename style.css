@@ -1981,3 +1981,8 @@ align-items: center;
   display: block;
   text-align: center;
 }
+.success-message {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 10px;
+}

@@ -481,15 +481,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
 
         if (!currentUser || !currentUser.firstName || !currentUser.lastName) {
-    // Незареєстрований → кнопка Get in touch
+    headerAvatar.classList.remove('avatar-circle');
     headerAvatar.innerHTML = `<a href="./login.html" class="btn-header">Get in touch</a>`;
-    headerAvatar.classList.remove('avatar-circle'); // видаляємо стиль круга
 } else {
-    // Зареєстрований → аватар з ініціалами
     const firstInitial = currentUser.firstName[0].toUpperCase();
     const lastInitial = currentUser.lastName[0].toUpperCase();
-    headerAvatar.innerHTML = `<div class="avatar-circle"><a href="./user-profile.html">${firstInitial}${lastInitial}</a></div>`;
+
+    headerAvatar.classList.add('avatar-circle');
+    headerAvatar.innerHTML = `<a href="./user-profile.html">${firstInitial}${lastInitial}</a>`;
 }
+
 
     }
 
@@ -644,7 +645,6 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('token');
             localStorage.removeItem('userId');
             updateHeader(); // оновити аватар або шапку
-            // краще без alert, щоб не заважав
             window.location.href = './login.html';  // Переадресація на логін
         }
     };  
@@ -1293,13 +1293,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const nameError = document.getElementById('nameError-sub');
     const emailError = document.getElementById('emailError-sub');
+    const successMessage = document.getElementById('successMessage-sub');
 
     form.addEventListener('submit', function (e) {
+        e.preventDefault(); // зупиняємо стандартну відправку
+
         let valid = true;
 
-        // Очищаємо попередні помилки
+        // Очищення попередніх повідомлень
         nameError.textContent = "";
         emailError.textContent = "";
+        successMessage.textContent = "";
 
         // --- Перевірка імені ---
         if (nameInput.value.trim() === "") {
@@ -1309,7 +1313,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // --- Перевірка email ---
         const emailValue = emailInput.value.trim();
-        
+
         if (emailValue === "") {
             emailError.textContent = "Please enter your email.";
             valid = false;
@@ -1318,12 +1322,16 @@ document.addEventListener('DOMContentLoaded', function () {
             valid = false;
         }
 
-        // Якщо є помилки — блокуємо відправку
-        if (!valid) {
-            e.preventDefault();
-        }
-    });
+        // Якщо не валідно — зупиняємо
+        if (!valid) return;
 
+        // Якщо валідно — показуємо успіх
+        successMessage.textContent = "You have successfully subscribed!";
+
+        // Можна очистити поля
+        form.reset();
+    });
 });
+
 
 
